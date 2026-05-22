@@ -11,15 +11,28 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
+  image?: string;
+  publishedDate?: Date;
+  updatedDate?: Date;
+  jsonLd?: object | object[];
 }
 
-const { title, description, article } = Astro.props;
+const { title, description, article, image, publishedDate, updatedDate, jsonLd } =
+  Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} article={article} />
+    <BaseHead
+      title={title}
+      description={description}
+      article={article}
+      image={image}
+      publishedDate={publishedDate}
+      updatedDate={updatedDate}
+      jsonLd={jsonLd}
+    />
   </head>
   <body class="flex min-h-screen flex-col bg-brand-bg text-brand-text">
     <a

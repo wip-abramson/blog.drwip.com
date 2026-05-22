@@ -3,13 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostListItem from "../components/PostListItem.astro";
 import { getPublishedPosts } from "../lib/posts";
 import { IDENTITY, LINKS } from "../consts";
+import { personSchema, blogSchema } from "../lib/structuredData";
 
 const posts = await getPublishedPosts();
 const latest = posts.slice(0, 5);
 const hasMore = posts.length > latest.length;
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={[blogSchema, personSchema]}>
   <div class="mx-auto max-w-[720px] px-6">
     <!-- Identity ----------------------------------------------------- -->
     <section class="pb-14 pt-20 sm:pt-28">

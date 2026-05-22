@@ -1,11 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { LINKS } from "../consts";
+import { personSchema } from "../lib/structuredData";
 ---
 
 <BaseLayout
   title="About"
   description="About Will Abramson (Dr Wip) and this collection of writing and research notes."
+  jsonLd={personSchema}
 >
   <div class="mx-auto max-w-[680px] px-6">
     <header class="pb-8 pt-20 sm:pt-24">

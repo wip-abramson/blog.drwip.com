@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ConceptTags from "../../components/ConceptTags.astro";
 import { getPublishedPosts, type Post } from "../../lib/posts";
+import { blogPostingSchema } from "../../lib/structuredData";
 
 /**
  * One page per published post. `[...slug]` is a catch-all so post ids
@@ -34,6 +35,8 @@ const { title, description, date, updated, tags, source_url } = post.data;
 
 const { Content } = await render(post);
 
+const postSchema = blogPostingSchema(post);
+
 let sourceHost = "";
 if (source_url) {
   try {
@@ -44,7 +47,14 @@ if (source_url) {
 }
 ---
 
-<BaseLayout title={title} description={description} article>
+<BaseLayout
+  title={title}
+  description={description}
+  article
+  publishedDate={date}
+  updatedDate={updated}
+  jsonLd={postSchema}
+>
   <article class="mx-auto max-w-[680px] px-6">
     <!-- Post header -------------------------------------------------- -->
     <header class="pb-8 pt-20 sm:pt-24">

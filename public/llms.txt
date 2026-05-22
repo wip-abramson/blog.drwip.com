@@ -1,0 +1,19 @@
+# Dr Wip · Thought Seeds
+
+> The personal blog of Will Abramson (Dr Wip): unpolished thoughts, shared in the open to grow into whatever they become. Essays and notes on identity, trust, memory, and decentralized systems.
+
+Thought Seeds is where Will Abramson plants early-stage ideas — writing shared well before it is finished. Posts explore digital identity, trust infrastructure, cryptography, memory, sovereignty, and what it means to coordinate in an increasingly autonomous digital society. The site also keeps a "living library" of books and the handwritten annotations they seeded, and a map of recurring concepts that link posts and books together.
+
+## Sections
+
+- [Writing](https://blog.drwip.com/posts): All published posts, newest first.
+- [Concepts](https://blog.drwip.com/concepts): Recurring ideas, each gathering the posts and books tagged with it.
+- [Library](https://blog.drwip.com/library): Books read, with handwritten annotation pages.
+- [About](https://blog.drwip.com/about): About Will Abramson (Dr Wip).
+- [RSS feed](https://blog.drwip.com/rss.xml): Subscribe to new posts.
+
+## Elsewhere
+
+- [drwip.com](https://drwip.com): Will Abramson's main site — work, roles, and publications.
+- [Words from Wip](https://www.wordsfromwip.com/s/words-from-dr-wip): Subscribe by email.
+- [GitHub](https://github.com/wip-abramson): Open-source code and projects.
