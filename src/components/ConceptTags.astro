@@ -1,0 +1,34 @@
+---
+import { conceptSlug } from "../lib/concepts";
+
+/**
+ * A row of concept links in their inline `#concept` form.
+ * Used on post listings and post pages for wayfinding.
+ */
+interface Props {
+  tags: string[];
+  class?: string;
+}
+
+const { tags, class: className } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul
+      class:list={["flex flex-wrap gap-x-3 gap-y-1", className]}
+      aria-label="Concepts"
+    >
+      {tags.map((tag) => (
+        <li>
+          <a
+            href={`/concepts/${conceptSlug(tag)}/`}
+            class="font-mono text-xs text-brand-muted transition-colors hover:text-brand-accent"
+          >
+            #{tag}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

@@ -1,0 +1,142 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import ConceptTags from "../../components/ConceptTags.astro";
+import { getPublishedPosts, type Post } from "../../lib/posts";
+
+/**
+ * One page per published post. `[...slug]` is a catch-all so post ids
+ * may contain slashes (e.g. nested folders) later on.
+ */
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts(); // newest first
+
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      // newest-first order: the next index is the older post.
+      olderPost: posts[index + 1] ?? null,
+      newerPost: posts[index - 1] ?? null,
+    },
+  }));
+}
+
+interface Props {
+  post: Post;
+  olderPost: Post | null;
+  newerPost: Post | null;
+}
+
+const { post, olderPost, newerPost } = Astro.props;
+const { title, description, date, updated, tags, source_url } = post.data;
+
+const { Content } = await render(post);
+
+let sourceHost = "";
+if (source_url) {
+  try {
+    sourceHost = new URL(source_url).hostname.replace(/^www\./, "");
+  } catch {
+    sourceHost = source_url;
+  }
+}
+---
+
+<BaseLayout title={title} description={description} article>
+  <article class="mx-auto max-w-[680px] px-6">
+    <!-- Post header -------------------------------------------------- -->
+    <header class="pb-8 pt-20 sm:pt-24">
+      <div class="mb-4 flex flex-wrap items-center gap-3 font-mono text-xs text-brand-muted">
+        <FormattedDate date={date} />
+        {
+          updated && (
+            <span>
+              · updated <FormattedDate date={updated} />
+            </span>
+          )
+        }
+        {
+          post.data.draft && (
+            <span class="rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-amber-700">
+              Draft
+            </span>
+          )
+        }
+      </div>
+
+      <h1 class="font-heading text-3xl leading-tight text-brand-text sm:text-4xl">
+        {title}
+      </h1>
+
+      <p class="mt-4 text-lg leading-relaxed text-brand-muted">{description}</p>
+
+      <ConceptTags tags={tags} class="mt-5" />
+    </header>
+
+    <hr class="border-brand-border" />
+
+    <!-- Source note -------------------------------------------------- -->
+    {
+      source_url && (
+        <p class="mt-6 rounded-lg border border-brand-border bg-brand-surface px-4 py-3 text-sm text-brand-muted">
+          {"This note grows from "}
+          <a
+            href={source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+          >{sourceHost}</a>{"."}
+        </p>
+      )
+    }
+
+    <!-- Article body ------------------------------------------------- -->
+    <div class="prose mt-8">
+      <Content />
+    </div>
+
+    <!-- Footer navigation ------------------------------------------- -->
+    <nav
+      class="mt-16 grid gap-4 border-t border-brand-border pt-8 sm:grid-cols-2"
+      aria-label="More posts"
+    >
+      {
+        olderPost ? (
+          <a href={`/posts/${olderPost.id}/`} class="group block">
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+              ← Older
+            </span>
+            <span class="mt-1 block font-heading text-brand-text transition-colors group-hover:text-brand-accent">
+              {olderPost.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newerPost && (
+          <a href={`/posts/${newerPost.id}/`} class="group block sm:text-right">
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+              Newer →
+            </span>
+            <span class="mt-1 block font-heading text-brand-text transition-colors group-hover:text-brand-accent">
+              {newerPost.data.title}
+            </span>
+          </a>
+        )
+      }
+    </nav>
+
+    <p class="mt-8">
+      <a
+        href="/posts"
+        class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+      >
+        ← All posts
+      </a>
+    </p>
+  </article>
+</BaseLayout>

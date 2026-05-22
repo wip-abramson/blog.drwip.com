@@ -1,0 +1,37 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+/**
+ * The single page shell: <head>, sticky header, footer.
+ * Every route renders inside this.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+  article?: boolean;
+}
+
+const { title, description, article } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} article={article} />
+  </head>
+  <body class="flex min-h-screen flex-col bg-brand-bg text-brand-text">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded focus:bg-brand-accent focus:px-3 focus:py-1.5 focus:text-sm focus:text-brand-bg"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

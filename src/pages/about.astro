@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { LINKS } from "../consts";
+---
+
+<BaseLayout
+  title="About"
+  description="About Will Abramson (Dr Wip) and this collection of writing and research notes."
+>
+  <div class="mx-auto max-w-[680px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">About</h1>
+    </header>
+
+    <div class="space-y-4 text-lg leading-relaxed text-brand-text">
+      <p>
+        I'm <strong class="font-semibold">Will Abramson</strong> — Dr Wip. I
+        design infrastructure for trust in a networked world: decentralised
+        identity, cryptography, and interoperable systems that let people and
+        machines coordinate without centralised control.
+      </p>
+      <p>
+        I work as a senior engineer and standards contributor, building
+        production systems and prototypes to test assumptions and bring new
+        trust infrastructure to life. I'm especially interested in how these
+        technologies enable trust, coordination, and shared memory in an
+        increasingly autonomous digital society.
+      </p>
+      <p>
+        This site is where I plant thought seeds — unpolished thoughts, shared
+        in the open well before they're finished. I'd rather get something out
+        while it feels worth saying than wait for the threads to pull together
+        into something coherent. Some will grow into something; some won't —
+        and every note is an open invitation to the conversation.
+      </p>
+    </div>
+
+    <!-- Links -------------------------------------------------------- -->
+    <div class="mt-10 border-t border-brand-border pt-8">
+      <h2 class="mb-4 font-mono text-sm uppercase tracking-widest text-brand-muted">
+        Elsewhere
+      </h2>
+      <ul class="space-y-3">
+        <li>
+          <a
+            href={LINKS.main}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-brand-accent underline underline-offset-4 hover:decoration-2"
+          >
+            drwip.com
+            <svg width="11" height="11" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path
+                d="M1 9L9 1M9 1H3M9 1V7"
+                stroke="currentColor"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <span class="text-brand-muted"> — my main site, work, and publications.</span>
+        </li>
+        <li>
+          <a
+            href={LINKS.subscribe}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-brand-accent underline underline-offset-4 hover:decoration-2"
+          >
+            Words from Wip
+            <svg width="11" height="11" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path
+                d="M1 9L9 1M9 1H3M9 1V7"
+                stroke="currentColor"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <span class="text-brand-muted"> — subscribe to follow along by email.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

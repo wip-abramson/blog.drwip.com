@@ -1,0 +1,34 @@
+---
+import { LINKS } from "../consts";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-brand-border py-10 px-6">
+  <div
+    class="mx-auto flex max-w-[720px] flex-col gap-3 text-sm text-brand-muted sm:flex-row sm:items-center sm:justify-between"
+  >
+    <span>© {year} Will Abramson</span>
+    <div class="flex items-center gap-5">
+      <a
+        href={LINKS.main}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-brand-accent"
+      >
+        drwip.com
+      </a>
+      <a
+        href={LINKS.subscribe}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-brand-accent"
+      >
+        Words from Wip
+      </a>
+      <a href={LINKS.rss} class="font-mono text-xs transition-colors hover:text-brand-accent">
+        RSS
+      </a>
+    </div>
+  </div>
+</footer>

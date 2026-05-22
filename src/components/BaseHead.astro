@@ -1,0 +1,63 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from "../consts";
+import "../styles/global.css";
+
+/**
+ * Everything that belongs in <head>: meta tags, SEO defaults,
+ * Open Graph / Twitter cards, fonts, and the favicon.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+  /** Set true on article pages so OG type is "article". */
+  article?: boolean;
+}
+
+const { title, description = SITE_DESCRIPTION, article = false } = Astro.props;
+
+// Pages pass a bare title; the homepage uses the site title verbatim.
+const pageTitle = title ? `${title} — ${SITE_TITLE}` : SITE_TITLE;
+
+// Canonical URL, resolved against the configured `site`.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={AUTHOR} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE_TITLE} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+
+<!-- Icons -->
+<link rel="icon" type="image/png" href="/favicon.png" />
+
+<!-- RSS autodiscovery -->
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
+/>
+
+<!-- Fonts (shared with drwip.com) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+/>

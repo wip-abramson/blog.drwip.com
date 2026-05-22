@@ -1,0 +1,23 @@
+---
+/**
+ * Renders a date as a semantic <time> element.
+ * Example output: "22 May 2026"
+ */
+interface Props {
+  date: Date;
+  class?: string;
+}
+
+const { date, class: className } = Astro.props;
+
+const display = date.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+// machine-readable YYYY-MM-DD for the datetime attribute
+const iso = date.toISOString().split("T")[0];
+---
+
+<time datetime={iso} class={className}>{display}</time>

@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostListItem from "../components/PostListItem.astro";
+import { getPublishedPosts } from "../lib/posts";
+import { IDENTITY, LINKS } from "../consts";
+
+const posts = await getPublishedPosts();
+const latest = posts.slice(0, 5);
+const hasMore = posts.length > latest.length;
+---
+
+<BaseLayout>
+  <div class="mx-auto max-w-[720px] px-6">
+    <!-- Identity ----------------------------------------------------- -->
+    <section class="pb-14 pt-20 sm:pt-28">
+      <p class="mb-5 font-mono text-xs uppercase tracking-widest text-brand-muted">
+        Will Abramson · Dr Wip
+      </p>
+      <h1 class="font-heading text-3xl leading-snug text-brand-text sm:text-4xl">
+        Thought seeds.
+      </h1>
+      <p class="mt-5 max-w-[34rem] text-lg leading-relaxed text-brand-muted">
+        {IDENTITY}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+        <a
+          href="/about"
+          class="text-brand-accent underline underline-offset-4 hover:decoration-2"
+        >
+          About
+        </a>
+        <a
+          href={LINKS.subscribe}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 text-brand-accent underline underline-offset-4 hover:decoration-2"
+        >
+          Subscribe on Words from Wip
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path
+              d="M1 9L9 1M9 1H3M9 1V7"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Latest posts ------------------------------------------------- -->
+    <section class="border-t border-brand-border pt-10">
+      <div class="mb-2 flex items-baseline justify-between gap-4">
+        <h2 class="font-mono text-sm uppercase tracking-widest text-brand-muted">
+          Recently planted
+        </h2>
+        {
+          hasMore && (
+            <a
+              href="/posts"
+              class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+            >
+              All posts →
+            </a>
+          )
+        }
+      </div>
+
+      {
+        latest.length > 0 ? (
+          <div class="divide-y divide-brand-border">
+            {latest.map((post) => (
+              <PostListItem post={post} />
+            ))}
+          </div>
+        ) : (
+          <p class="py-10 leading-relaxed text-brand-muted">
+            Nothing has sprouted here yet — the first seeds are about to go in.
+            In the meantime, you can{" "}
+            <a
+              href={LINKS.subscribe}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-brand-accent underline underline-offset-4 hover:decoration-2"
+            >
+              subscribe on Words from Wip
+            </a>{" "}
+            to be notified.
+          </p>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>
