@@ -1,0 +1,40 @@
+# A living-library record. The annotation image is the substance;
+# the rest is just enough structure to place the book.
+title: On Freedom
+author: Timothy Snyder
+type: book
+status: read
+published: 2024
+link: https://timothysnyder.org/on-freedom
+featured: true
+
+# When you read it — YYYY-MM. Drives the library timeline.
+read: "2026-05"
+
+tags:
+  - freedom
+  - sovereignty
+  - unpredictability
+
+# What the book argues — its core thesis.
+summary: >-
+  Defines positive freedom as the value of values and identifies five forms
+  of freedom: sovereignty, unpredictability, mobility, factuality and
+  solidarity. Each enabling and enabled by the others, all of them necessary
+  to sustain and expand freedom.
+
+# A personal line — what this book did to your thinking. Optional.
+# influence: >-
+#   ...
+
+# Posts that genuinely grew from this book.
+seeded:
+  - sovereignty-over-our-digital-selves
+  - appreciating-and-encouraging-unpredictability
+
+# Handwritten annotation pages — add more entries as they are uploaded.
+annotations:
+  - image: ./on-freedom-annotation.jpg
+    caption: >-
+      Synthesis page — sovereignty, capacity, machines, and unpredictability
+      set against one another.

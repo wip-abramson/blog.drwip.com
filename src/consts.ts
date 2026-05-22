@@ -24,7 +24,8 @@ export const LINKS = {
 
 /** Primary navigation. */
 export const NAV_LINKS = [
-  { href: "/posts", label: "Posts" },
+  { href: "/posts", label: "Writing" },
   { href: "/concepts", label: "Concepts" },
+  { href: "/library", label: "Library" },
   { href: "/about", label: "About" },
 ] as const;

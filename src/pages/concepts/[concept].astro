@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostListItem from "../../components/PostListItem.astro";
+import LibraryListItem from "../../components/LibraryListItem.astro";
 import { getAllConcepts, conceptTitle, type Concept } from "../../lib/concepts";
 
 /** One page per concept. */
@@ -17,16 +18,23 @@ interface Props {
 }
 
 const { concept } = Astro.props;
-const count = concept.count;
+const { posts, books } = concept;
 
 // The concept page is the concept's home, so it gets a proper capitalised
 // name ("Identity") — the "#identity" hashtag form is only for wayfinding.
 const displayName = conceptTitle(concept.name);
+
+const phrase = [
+  posts.length && `${posts.length} ${posts.length === 1 ? "note" : "notes"}`,
+  books.length && `${books.length} ${books.length === 1 ? "book" : "books"}`,
+]
+  .filter(Boolean)
+  .join(" and ");
 ---
 
 <BaseLayout
   title={displayName}
-  description={`Notes by Dr Wip on ${concept.name}.`}
+  description={`Notes and books by Dr Wip on ${concept.name}.`}
 >
   <div class="mx-auto max-w-[720px] px-6">
     <header class="pb-8 pt-20 sm:pt-24">
@@ -37,12 +45,39 @@ const displayName = conceptTitle(concept.name);
         {displayName}
       </h1>
       <p class="mt-3 text-brand-muted">
-        {count} {count === 1 ? "note" : "notes"} growing from this concept.
+        {phrase} growing from this concept.
       </p>
     </header>
 
-    <div class="divide-y divide-brand-border border-t border-brand-border pt-8">
-      {concept.posts.map((post) => <PostListItem post={post} />)}
+    <div class="border-t border-brand-border pt-8">
+      {
+        posts.length > 0 && (
+          <div class="divide-y divide-brand-border">
+            {posts.map((post) => (
+              <PostListItem post={post} />
+            ))}
+          </div>
+        )
+      }
+
+      {
+        books.length > 0 && (
+          <section
+            class:list={[
+              posts.length > 0 && "mt-10 border-t border-brand-border pt-8",
+            ]}
+          >
+            <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
+              From the library
+            </h2>
+            <div class="divide-y divide-brand-border">
+              {books.map((entry) => (
+                <LibraryListItem entry={entry} />
+              ))}
+            </div>
+          </section>
+        )
+      }
     </div>
 
     <p class="mt-8">

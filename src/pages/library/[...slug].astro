@@ -1,0 +1,161 @@
+---
+import { Image } from "astro:assets";
+import { getEntries } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ConceptTags from "../../components/ConceptTags.astro";
+import PostListItem from "../../components/PostListItem.astro";
+import { getLibrary, formatReadDate, type LibraryEntry } from "../../lib/library";
+
+/**
+ * One page per library entry — a record of a book and the annotation
+ * page that is the evidence of encounter. `[...slug]` mirrors the posts
+ * route so ids may nest later.
+ */
+export async function getStaticPaths() {
+  const entries = await getLibrary();
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: LibraryEntry;
+}
+
+const { entry }: Props = Astro.props;
+const { title, author, status, read, published, link, influence, summary, tags, annotations, seeded } =
+  entry.data;
+
+// Posts this book seeded — curated, build-time validated references.
+const seededPosts = (seeded.length > 0 ? await getEntries(seeded) : []).filter(
+  (post) => (import.meta.env.PROD ? post.data.draft !== true : true),
+);
+
+let linkHost = "";
+if (link) {
+  try {
+    linkHost = new URL(link).hostname.replace(/^www\./, "");
+  } catch {
+    linkHost = link;
+  }
+}
+
+// The reading timeline leads the meta line; status covers books not yet dated.
+const readLabel = read
+  ? `Read ${formatReadDate(read)}`
+  : status === "reading"
+    ? "Currently reading"
+    : status === "shelved"
+      ? "On the shelf"
+      : null;
+---
+
+<BaseLayout title={title} description={influence ?? summary ?? `${title} by ${author}.`}>
+  <article class="mx-auto max-w-[720px] px-6">
+    <!-- Record header ------------------------------------------------ -->
+    <header class="pb-8 pt-20 sm:pt-24">
+      <p class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted">
+        Living Library
+      </p>
+      <h1 class="font-heading text-3xl leading-tight text-brand-text sm:text-4xl">
+        {title}
+      </h1>
+      <p class="mt-2 text-brand-muted">by {author}</p>
+      {
+        (readLabel || published || link) && (
+          <div class="mt-3 flex flex-wrap items-center gap-3 font-mono text-xs text-brand-muted">
+            {readLabel && <span class="text-brand-text">{readLabel}</span>}
+            {published && <span>published {published}</span>}
+            {link && (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+              >
+                {linkHost} ↗
+              </a>
+            )}
+          </div>
+        )
+      }
+    </header>
+
+    <hr class="border-brand-border" />
+
+    <!-- What the book did, and what it argues ------------------------ -->
+    {
+      influence && (
+        <p class="mt-8 text-lg leading-relaxed text-brand-text">{influence}</p>
+      )
+    }
+
+    {
+      summary && (
+        <div class:list={["prose", influence ? "mt-6" : "mt-8"]}>
+          <p>{summary}</p>
+        </div>
+      )
+    }
+
+    <!-- The annotation page — the substance of the record ------------ -->
+    <section class="mt-10">
+      <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted">
+        Notes from the margins
+      </h2>
+      {
+        annotations.length > 0 ? (
+          <div class="space-y-8">
+            {annotations.map((page, i) => (
+              <figure>
+                <Image
+                  src={page.image}
+                  alt={`Annotation page ${i + 1} for ${title}`}
+                  width={1440}
+                  class="w-full rounded-lg border border-brand-border"
+                />
+                {page.caption && (
+                  <figcaption class="mt-3 text-sm leading-relaxed text-brand-muted">
+                    {page.caption}
+                  </figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <p class="leading-relaxed text-brand-muted">
+            The notes for this book haven't been added to the shelf yet.
+          </p>
+        )
+      }
+    </section>
+
+    <ConceptTags tags={tags} class="mt-8" />
+
+    <!-- Posts this book seeded — curated heritage, not tag-matching -- -->
+    {
+      seededPosts.length > 0 && (
+        <section class="mt-12 border-t border-brand-border pt-8">
+          <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
+            What grew from this
+          </h2>
+          <div class="divide-y divide-brand-border">
+            {seededPosts.map((post) => (
+              <PostListItem post={post} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <p class="mt-12">
+      <a
+        href="/library"
+        class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+      >
+        ← The library
+      </a>
+    </p>
+  </article>
+</BaseLayout>

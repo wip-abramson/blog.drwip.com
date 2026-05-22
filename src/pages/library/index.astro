@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LibraryListItem from "../../components/LibraryListItem.astro";
+import { getLibrary } from "../../lib/library";
+
+const entries = await getLibrary();
+const count = entries.length;
+---
+
+<BaseLayout
+  title="Library"
+  description="A living library — books and texts that shaped how Dr Wip thinks, with notes from the margins."
+>
+  <div class="mx-auto max-w-[720px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">Library</h1>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        A living library: books and texts that shaped how Dr Wip thinks —
+        attended to as physical copies, with notes from the margins and the
+        ideas they seeded.
+      </p>
+    </header>
+
+    {
+      count > 0 ? (
+        <div class="divide-y divide-brand-border border-t border-brand-border pt-8">
+          {entries.map((entry) => (
+            <LibraryListItem entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="border-t border-brand-border py-12 leading-relaxed text-brand-muted">
+          The shelf is empty for now — the first book is being logged.
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>
