@@ -2,7 +2,7 @@
 title: "On Identity, Memory and Meaning"
 description: "Riffing on what these complex, beautiful ideas mean to me"
 date: 2025-07-13
-tags: []
+tags: ["identity", "memory", "meaning", "intersubjectivity"]
 draft: false
 ---
 
