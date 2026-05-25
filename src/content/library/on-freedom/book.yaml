@@ -32,9 +32,15 @@ seeded:
   - sovereignty-over-our-digital-selves
   - appreciating-and-encouraging-unpredictability
 
+cover: ./cover.jpg
+
 # Handwritten annotation pages — add more entries as they are uploaded.
 annotations:
-  - image: ./on-freedom-annotation.jpg
+  - image: ./annotation.jpg
     caption: >-
       Synthesis page — sovereignty, capacity, machines, and unpredictability
       set against one another.
+  - image: ./annotation-2.jpg
+    caption: >-
+      The other three forms — mobility, factuality, and solidarity — and
+      how each one props up the rest.

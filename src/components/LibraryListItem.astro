@@ -13,21 +13,26 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, author, read, influence, summary, tags, annotations } = entry.data;
+const { title, author, read, influence, summary, tags, annotations, cover } = entry.data;
 const href = `/library/${entry.id}/`;
 const blurb = influence ?? summary;
-const cover = annotations[0];
+// Prefer the book cover; fall back to the first annotation page.
+const thumb = cover
+  ? { image: cover, alt: `Cover of ${title}` }
+  : annotations[0]
+    ? { image: annotations[0].image, alt: `Handwritten annotation page for ${title}` }
+    : null;
 ---
 
 <article class="group py-7 first:pt-0">
   <a href={href} class="flex gap-5">
     {
-      cover && (
+      thumb && (
         <Image
-          src={cover.image}
-          alt={`Handwritten annotation page for ${title}`}
+          src={thumb.image}
+          alt={thumb.alt}
           width={280}
-          class="hidden h-24 w-32 shrink-0 rounded border border-brand-border object-cover sm:block"
+          class="hidden h-32 w-20 shrink-0 rounded border border-brand-border object-cover sm:block"
         />
       )
     }

@@ -38,7 +38,14 @@ const posts = defineCollection({
  * map as posts, so a book and the posts it seeded gather in one place.
  */
 const library = defineCollection({
-  loader: glob({ pattern: "**/*.{yaml,yml}", base: "./src/content/library" }),
+  // Each book lives in its own folder: `library/<slug>/book.yaml` plus
+  // images. The folder name is the canonical slug — strip the filename
+  // so the id stays a clean `<slug>` rather than `<slug>/book`.
+  loader: glob({
+    pattern: "**/book.{yaml,yml}",
+    base: "./src/content/library",
+    generateId: ({ entry }) => entry.replace(/\/book\.(yaml|yml)$/, ""),
+  }),
   schema: ({ image }) =>
     z.object({
       // --- required -------------------------------------------------------
