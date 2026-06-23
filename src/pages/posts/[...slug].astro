@@ -1,5 +1,5 @@
 ---
-import { render } from "astro:content";
+import { render, getEntries } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ConceptTags from "../../components/ConceptTags.astro";
@@ -34,6 +34,12 @@ const { post, olderPost, newerPost } = Astro.props;
 const { title, description, date, updated, tags, source_url } = post.data;
 
 const { Content } = await render(post);
+
+// Reflections this post connects to — resolved from the `reflections`
+// references, each linked to its anchor in the "Thinking about" stream.
+const relatedReflections = post.data.reflections.length
+  ? await getEntries(post.data.reflections)
+  : [];
 
 const postSchema = blogPostingSchema(post);
 
@@ -106,6 +112,29 @@ if (source_url) {
     <div class="prose mt-8">
       <Content />
     </div>
+
+    <!-- Reflections this post connects to ---------------------------- -->
+    {
+      relatedReflections.length > 0 && (
+        <aside class="mt-12 rounded-lg border border-brand-border bg-brand-surface px-5 py-4">
+          <h2 class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+            Thinking about
+          </h2>
+          <ul class="mt-2 space-y-1">
+            {relatedReflections.map((r) => (
+              <li>
+                <a
+                  href={`/reflections#${r.id}`}
+                  class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+                >
+                  {r.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
 
     <!-- Footer navigation ------------------------------------------- -->
     <nav

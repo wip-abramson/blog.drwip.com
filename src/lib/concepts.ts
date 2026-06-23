@@ -1,9 +1,10 @@
 import { getPublishedPosts, type Post } from "./posts";
 import { getLibrary, type LibraryEntry } from "./library";
+import { getReflections, type Reflection } from "./reflections";
 
 /**
- * Concepts are the `tags` shared by posts and library entries, surfaced
- * as browsable pages so a body of related work can accrete over time.
+ * Concepts are the `tags` shared by posts, library entries, and reflections,
+ * surfaced as browsable pages so a body of related work can accrete over time.
  * The frontmatter field is still called `tags`; "concept" is the
  * reader-facing name, and `#tag` is its inline wayfinding form.
  */
@@ -12,10 +13,12 @@ export interface Concept {
   name: string;
   /** URL-safe form, e.g. "identity-systems". */
   slug: string;
-  /** Total items carrying this concept (posts + books). */
+  /** Total items carrying this concept (posts + reflections + books). */
   count: number;
   /** Posts carrying this concept, newest first. */
   posts: Post[];
+  /** Reflections carrying this concept, newest first. */
+  reflections: Reflection[];
   /** Library entries carrying this concept. */
   books: LibraryEntry[];
 }
@@ -35,11 +38,12 @@ export function conceptTitle(name: string): string {
 }
 
 /**
- * Every concept across all published posts and library entries, sorted
- * by frequency (then name). Posts within each concept stay newest-first.
+ * Every concept across all published posts, reflections, and library entries,
+ * sorted by frequency (then name). Items within each concept stay newest-first.
  */
 export async function getAllConcepts(): Promise<Concept[]> {
   const posts = await getPublishedPosts(); // newest first
+  const reflections = await getReflections(); // newest first
   const books = await getLibrary();
   const bySlug = new Map<string, Concept>();
 
@@ -52,7 +56,7 @@ export async function getAllConcepts(): Promise<Concept[]> {
 
     let concept = bySlug.get(slug);
     if (!concept) {
-      concept = { name, slug, count: 0, posts: [], books: [] };
+      concept = { name, slug, count: 0, posts: [], reflections: [], books: [] };
       bySlug.set(slug, concept);
     }
     return concept;
@@ -63,6 +67,11 @@ export async function getAllConcepts(): Promise<Concept[]> {
       ensure(raw)?.posts.push(post);
     }
   }
+  for (const reflection of reflections) {
+    for (const raw of reflection.data.tags) {
+      ensure(raw)?.reflections.push(reflection);
+    }
+  }
   for (const book of books) {
     for (const raw of book.data.tags) {
       ensure(raw)?.books.push(book);
@@ -70,7 +79,8 @@ export async function getAllConcepts(): Promise<Concept[]> {
   }
 
   for (const concept of bySlug.values()) {
-    concept.count = concept.posts.length + concept.books.length;
+    concept.count =
+      concept.posts.length + concept.reflections.length + concept.books.length;
   }
 
   return [...bySlug.values()].sort(

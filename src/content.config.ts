@@ -25,6 +25,9 @@ const posts = defineCollection({
     projects: z.array(z.string()).default([]),
     source_url: z.string().url().optional(),
     featured: z.boolean().default(false),
+    /** Reflections this post grew from / connects to — see the `reflections`
+     * collection. Renders as "Thinking about" links on the post page. */
+    reflections: z.array(reference("reflections")).default([]),
   }),
 });
 
@@ -86,4 +89,35 @@ const library = defineCollection({
     }),
 });
 
-export const collections = { posts, library };
+/**
+ * The `reflections` collection — "Thinking about".
+ *
+ * Short reflections in the margins of *other people's* writing: an essay, a
+ * post, an argument worth turning over, paired with a link back to the source.
+ * The reflection itself is the Markdown body; the frontmatter describes the
+ * piece being responded to. Like posts and books, `tags` feed the `/concepts`
+ * map, and each entry is deep-linkable (`/reflections#<slug>`) so posts can
+ * connect to them via the `reflections` reference field above.
+ */
+const reflections = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/reflections" }),
+  schema: z.object({
+    // --- the piece being responded to ----------------------------------
+    /** Title of the source piece. */
+    title: z.string(),
+    /** The piece itself — required; what the reflection links back to. */
+    source_url: z.string().url(),
+    /** Who wrote the source piece. */
+    author: z.string().optional(),
+    /** Publication / Substack name. Falls back to the URL host if omitted. */
+    site: z.string().optional(),
+
+    // --- placement ------------------------------------------------------
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { posts, library, reflections };

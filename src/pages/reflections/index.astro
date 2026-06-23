@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ReflectionItem from "../../components/ReflectionItem.astro";
+import { getReflections } from "../../lib/reflections";
+
+const reflections = await getReflections();
+const count = reflections.length;
+---
+
+<BaseLayout
+  title="Thinking about..."
+  description="Short reflections riffing on other people's writing and ideas."
+>
+  <div class="mx-auto max-w-[720px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">
+        Thinking about
+      </h1>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        Short reflections riffing on other people's writing and ideas. The fertile soil from which my own thoughts develop and grow.
+      </p>
+    </header>
+
+    {
+      count > 0 ? (
+        <div class="divide-y divide-brand-border border-t border-brand-border pt-8">
+          {reflections.map((reflection) => (
+            <ReflectionItem reflection={reflection} />
+          ))}
+        </div>
+      ) : (
+        <p class="border-t border-brand-border py-12 leading-relaxed text-brand-muted">
+          Nothing here yet — the first reflections are taking shape.
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

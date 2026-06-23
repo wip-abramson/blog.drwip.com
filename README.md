@@ -1,4 +1,4 @@
-# blog.drwip.com
+# thinking.drwip.com
 
 A minimal writing and research-notebook site for **Will Abramson (Dr Wip)**.
 
@@ -6,7 +6,7 @@ Built with [Astro](https://astro.build), TypeScript, MDX, Astro content
 collections, and Tailwind CSS. Static output — no client-side JavaScript
 shipped beyond what Astro needs.
 
-- **Live:** https://blog.drwip.com
+- **Live:** https://thinking.drwip.com
 - **Main site:** https://drwip.com
 - **Subscribe:** https://www.wordsfromwip.com/s/words-from-dr-wip
 
@@ -105,12 +105,14 @@ To deploy:
 1. Push this repository to GitHub (or GitLab/Bitbucket).
 2. In Netlify, **Add new site → Import an existing project** and pick the repo.
 3. Netlify reads `netlify.toml` automatically — accept the defaults and deploy.
-4. Add the custom domain `blog.drwip.com` under **Domain settings**.
+4. Add the custom domain `thinking.drwip.com` under **Domain settings**. The
+   former `blog.drwip.com` is deprecated — keep it live as a redirect to
+   `thinking.drwip.com`.
 
 Every push to the production branch triggers a rebuild and deploy.
 
 ## Notes
 
-- `site` in `astro.config.mjs` is set to `https://blog.drwip.com`; update it
+- `site` in `astro.config.mjs` is set to `https://thinking.drwip.com`; update it
   if the domain changes, since it drives canonical URLs, the sitemap, and RSS.
 - A `sitemap-index.xml` is generated automatically by `@astrojs/sitemap`.

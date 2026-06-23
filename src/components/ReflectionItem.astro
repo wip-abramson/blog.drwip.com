@@ -1,0 +1,55 @@
+---
+import { render } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import ConceptTags from "./ConceptTags.astro";
+import { sourceHost, type Reflection } from "../lib/reflections";
+
+/**
+ * One reflection in the "Thinking about" stream — a short note in the margin
+ * of someone else's writing, with the source linked. Each entry carries a
+ * stable `id` so it is individually addressable (`/reflections#<slug>`) and
+ * posts can link straight to it. Also used on concept pages.
+ */
+interface Props {
+  reflection: Reflection;
+}
+
+const { reflection } = Astro.props;
+const { title, author, source_url, site, date, tags } = reflection.data;
+const host = site ?? sourceHost(source_url);
+
+// The reflection text is the entry's Markdown body.
+const { Content } = await render(reflection);
+---
+
+<article id={reflection.id} class="group scroll-mt-24 py-7 first:pt-0">
+  <div class="mb-2 flex items-center gap-3 font-mono text-xs text-brand-muted">
+    <span class="uppercase tracking-widest">Thinking about</span>
+    <FormattedDate date={date} />
+    <a
+      href={`#${reflection.id}`}
+      class="opacity-0 transition-opacity hover:text-brand-accent group-hover:opacity-100"
+      aria-label="Permalink to this reflection">#</a
+    >
+  </div>
+
+  <h3 class="font-heading text-xl leading-snug text-brand-text">
+    <a
+      href={source_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-colors hover:text-brand-accent"
+    >
+      {title}
+    </a>
+  </h3>
+  <p class="mt-0.5 font-mono text-xs text-brand-muted">
+    {author && `${author} · `}{host} ↗
+  </p>
+
+  <div class="prose mt-3">
+    <Content />
+  </div>
+
+  <ConceptTags tags={tags} class="mt-4" />
+</article>

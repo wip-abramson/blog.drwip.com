@@ -11,7 +11,7 @@ const vitePlugins = /** @type {any} */ ([tailwindcss()]);
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://blog.drwip.com",
+  site: "https://thinking.drwip.com",
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: vitePlugins,

@@ -2,12 +2,22 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostListItem from "../components/PostListItem.astro";
 import { getPublishedPosts } from "../lib/posts";
+import {
+  getReflections,
+  pickHomeReflections,
+  sourceHost,
+} from "../lib/reflections";
 import { IDENTITY, LINKS } from "../consts";
 import { personSchema, blogSchema } from "../lib/structuredData";
 
 const posts = await getPublishedPosts();
 const latest = posts.slice(0, 5);
 const hasMore = posts.length > latest.length;
+
+// Homepage taster: the two latest reflections plus one random other.
+const reflections = await getReflections();
+const homeReflections = pickHomeReflections(reflections);
+const moreReflections = reflections.length > homeReflections.length;
 ---
 
 <BaseLayout jsonLd={[blogSchema, personSchema]}>
@@ -91,5 +101,41 @@ const hasMore = posts.length > latest.length;
         )
       }
     </section>
+
+    <!-- Thinking about ----------------------------------------------- -->
+    {
+      homeReflections.length > 0 && (
+        <section class="mt-12 border-t border-brand-border pt-10">
+          <div class="mb-3 flex items-baseline justify-between gap-4">
+            <h2 class="font-mono text-sm uppercase tracking-widest text-brand-muted">
+              Thinking about
+            </h2>
+            {moreReflections && (
+              <a
+                href="/reflections"
+                class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+              >
+                All reflections →
+              </a>
+            )}
+          </div>
+
+          <ul class="divide-y divide-brand-border">
+            {homeReflections.map((reflection) => (
+              <li>
+                <a href={`/reflections#${reflection.id}`} class="group block py-3">
+                  <span class="font-heading text-lg leading-snug text-brand-text transition-colors group-hover:text-brand-accent">
+                    {reflection.data.title}
+                  </span>
+                  <span class="mt-0.5 block font-mono text-xs text-brand-muted">
+                    {reflection.data.author ?? sourceHost(reflection.data.source_url)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </div>
 </BaseLayout>

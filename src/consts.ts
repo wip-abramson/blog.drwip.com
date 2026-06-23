@@ -2,7 +2,7 @@
  * Site-wide constants. Single source of truth for metadata and links.
  */
 
-export const SITE_URL = "https://blog.drwip.com";
+export const SITE_URL = "https://thinking.drwip.com";
 
 export const SITE_TITLE = "Dr Wip · Thought Seeds";
 
@@ -25,6 +25,7 @@ export const LINKS = {
 /** Primary navigation. */
 export const NAV_LINKS = [
   { href: "/posts", label: "Writing" },
+  { href: "/reflections", label: "Thinking about" },
   { href: "/concepts", label: "Concepts" },
   { href: "/library", label: "Library" },
   { href: "/about", label: "About" },
