@@ -123,7 +123,7 @@ const moreReflections = reflections.length > homeReflections.length;
           <ul class="divide-y divide-brand-border">
             {homeReflections.map((reflection) => (
               <li>
-                <a href={`/reflections#${reflection.id}`} class="group block py-3">
+                <a href={`/reflections/${reflection.id}/`} class="group block py-3">
                   <span class="font-heading text-lg leading-snug text-brand-text transition-colors group-hover:text-brand-accent">
                     {reflection.data.title}
                   </span>

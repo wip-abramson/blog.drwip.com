@@ -1,0 +1,139 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import ConceptTags from "../../components/ConceptTags.astro";
+import {
+  getReflections,
+  sourceHost,
+  type Reflection,
+} from "../../lib/reflections";
+
+/**
+ * One page per reflection — its own linkable URL. `[...slug]` is a catch-all
+ * to mirror the posts route, so ids may contain slashes later on.
+ */
+export async function getStaticPaths() {
+  const reflections = await getReflections(); // newest first
+
+  return reflections.map((reflection, index) => ({
+    params: { slug: reflection.id },
+    props: {
+      reflection,
+      // newest-first order: the next index is the older reflection.
+      olderReflection: reflections[index + 1] ?? null,
+      newerReflection: reflections[index - 1] ?? null,
+    },
+  }));
+}
+
+interface Props {
+  reflection: Reflection;
+  olderReflection: Reflection | null;
+  newerReflection: Reflection | null;
+}
+
+const { reflection, olderReflection, newerReflection } = Astro.props;
+const { title, author, source_url, source_title, site, date, updated, tags } =
+  reflection.data;
+
+const sourceLabel = source_title ?? sourceHost(source_url);
+const byline = [author, site].filter(Boolean).join(" · ");
+const description = `Dr Wip reflecting on "${sourceLabel}"${author ? ` by ${author}` : ""}.`;
+
+const { Content } = await render(reflection);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  article
+  publishedDate={date}
+  updatedDate={updated}
+>
+  <article class="mx-auto max-w-[680px] px-6">
+    <!-- Reflection header -------------------------------------------- -->
+    <header class="pb-8 pt-20 sm:pt-24">
+      <div class="mb-4 flex flex-wrap items-center gap-3 font-mono text-xs text-brand-muted">
+        <span class="uppercase tracking-widest">Thinking about</span>
+        <FormattedDate date={date} />
+        {
+          updated && (
+            <span>
+              · updated <FormattedDate date={updated} />
+            </span>
+          )
+        }
+      </div>
+
+      <h1 class="font-heading text-3xl leading-tight text-brand-text sm:text-4xl">
+        {title}
+      </h1>
+
+      <p class="mt-4 text-brand-muted">
+        Reflecting on{" "}
+        <a
+          href={source_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+          >{sourceLabel} ↗</a
+        >{byline && ` by ${byline}`}
+      </p>
+
+      <ConceptTags tags={tags} class="mt-5" />
+    </header>
+
+    <hr class="border-brand-border" />
+
+    <!-- Reflection body ---------------------------------------------- -->
+    <div class="prose mt-8">
+      <Content />
+    </div>
+
+    <!-- Footer navigation -------------------------------------------- -->
+    <nav
+      class="mt-16 grid gap-4 border-t border-brand-border pt-8 sm:grid-cols-2"
+      aria-label="More reflections"
+    >
+      {
+        olderReflection ? (
+          <a href={`/reflections/${olderReflection.id}/`} class="group block">
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+              ← Older
+            </span>
+            <span class="mt-1 block font-heading text-brand-text transition-colors group-hover:text-brand-accent">
+              {olderReflection.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newerReflection && (
+          <a
+            href={`/reflections/${newerReflection.id}/`}
+            class="group block sm:text-right"
+          >
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+              Newer →
+            </span>
+            <span class="mt-1 block font-heading text-brand-text transition-colors group-hover:text-brand-accent">
+              {newerReflection.data.title}
+            </span>
+          </a>
+        )
+      }
+    </nav>
+
+    <p class="mt-8">
+      <a
+        href="/reflections"
+        class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+      >
+        ← All reflections
+      </a>
+    </p>
+  </article>
+</BaseLayout>

@@ -31,15 +31,15 @@ const { Content } = await render(reflection);
   <div class="mb-2 flex items-center gap-3 font-mono text-xs text-brand-muted">
     <span class="uppercase tracking-widest">Thinking about</span>
     <FormattedDate date={date} />
-    <a
-      href={`#${reflection.id}`}
-      class="opacity-0 transition-opacity hover:text-brand-accent group-hover:opacity-100"
-      aria-label="Permalink to this reflection">#</a
-    >
   </div>
 
   <h3 class="font-heading text-xl leading-snug text-brand-text">
-    {title}
+    <a
+      href={`/reflections/${reflection.id}/`}
+      class="transition-colors hover:text-brand-accent"
+    >
+      {title}
+    </a>
   </h3>
   <p class="mt-0.5 text-sm text-brand-muted">
     Reflecting on{" "}
