@@ -15,8 +15,13 @@ interface Props {
 }
 
 const { reflection } = Astro.props;
-const { title, author, source_url, site, date, tags } = reflection.data;
-const host = site ?? sourceHost(source_url);
+const { title, author, source_url, source_title, site, date, tags } =
+  reflection.data;
+
+// The linked label for the inspiring piece: its title if known, else the host.
+const sourceLabel = source_title ?? sourceHost(source_url);
+// Trailing attribution: " by Author · Publication".
+const byline = [author, site].filter(Boolean).join(" · ");
 
 // The reflection text is the entry's Markdown body.
 const { Content } = await render(reflection);
@@ -34,17 +39,17 @@ const { Content } = await render(reflection);
   </div>
 
   <h3 class="font-heading text-xl leading-snug text-brand-text">
+    {title}
+  </h3>
+  <p class="mt-0.5 text-sm text-brand-muted">
+    Reflecting on{" "}
     <a
       href={source_url}
       target="_blank"
       rel="noopener noreferrer"
-      class="transition-colors hover:text-brand-accent"
-    >
-      {title}
-    </a>
-  </h3>
-  <p class="mt-0.5 font-mono text-xs text-brand-muted">
-    {author && `${author} · `}{host} ↗
+      class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+    >{sourceLabel} ↗</a
+    >{byline && ` by ${byline}`}
   </p>
 
   <div class="prose mt-3">

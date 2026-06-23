@@ -128,7 +128,9 @@ const moreReflections = reflections.length > homeReflections.length;
                     {reflection.data.title}
                   </span>
                   <span class="mt-0.5 block font-mono text-xs text-brand-muted">
-                    {reflection.data.author ?? sourceHost(reflection.data.source_url)}
+                    Reflecting on{" "}
+                    {reflection.data.source_title ??
+                      sourceHost(reflection.data.source_url)}
                   </span>
                 </a>
               </li>

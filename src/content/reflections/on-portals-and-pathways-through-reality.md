@@ -1,6 +1,7 @@
 ---
 title: "On Portals and Pathways Through Reality"
 source_url: "https://contraptions.venkateshrao.com/p/search-discovery-pills-and-portals"
+source_title: "Search, Discovery, Pills, and Portals"
 author: "Venkatesh Rao"
 site: "Contraptions"
 date: 2026-06-23

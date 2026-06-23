@@ -102,14 +102,19 @@ const library = defineCollection({
 const reflections = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/reflections" }),
   schema: z.object({
-    // --- the piece being responded to ----------------------------------
-    /** Title of the source piece. */
+    // --- the reflection ------------------------------------------------
+    /** The reflection's own title (Dr Wip's), not the source piece's. */
     title: z.string(),
+
+    // --- the piece being reflected on ----------------------------------
     /** The piece itself — required; what the reflection links back to. */
     source_url: z.string().url(),
+    /** Title of the source piece. Rendered as "Reflecting on <source_title>";
+     * falls back to the URL host if omitted. */
+    source_title: z.string().optional(),
     /** Who wrote the source piece. */
     author: z.string().optional(),
-    /** Publication / Substack name. Falls back to the URL host if omitted. */
+    /** Publication / Substack name. Shown after the author if present. */
     site: z.string().optional(),
 
     // --- placement ------------------------------------------------------
