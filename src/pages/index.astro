@@ -11,7 +11,7 @@ import { IDENTITY, LINKS } from "../consts";
 import { personSchema, blogSchema } from "../lib/structuredData";
 
 const posts = await getPublishedPosts();
-const latest = posts.slice(0, 5);
+const latest = posts.slice(0, 3);
 const hasMore = posts.length > latest.length;
 
 // Homepage taster: the two latest reflections plus one random other.

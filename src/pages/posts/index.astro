@@ -10,7 +10,7 @@ const count = posts.length;
 
 <BaseLayout
   title="Writing"
-  description="All writing and research notes by Dr Wip, newest first."
+  description="All writing and essays by Dr Wip, newest first."
 >
   <div class="mx-auto max-w-[720px] px-6">
     <header class="pb-8 pt-20 sm:pt-24">
@@ -18,8 +18,8 @@ const count = posts.length;
       <p class="mt-3 text-brand-muted">
         {
           count > 0
-            ? `${count} ${count === 1 ? "note" : "notes"}, newest first.`
-            : "Notes and longer pieces, newest first."
+            ? `${count} ${count === 1 ? "piece" : "pieces"}, newest first.`
+            : "Pieces and longer essays, newest first."
         }
       </p>
     </header>
@@ -34,7 +34,7 @@ const count = posts.length;
       ) : (
         <div class="border-t border-brand-border py-12">
           <p class="leading-relaxed text-brand-muted">
-            Nothing has sprouted here yet. The first notes are being written — {" "}
+            Nothing has sprouted here yet. The first pieces are being written — {" "}
             <a
               href={LINKS.subscribe}
               target="_blank"
