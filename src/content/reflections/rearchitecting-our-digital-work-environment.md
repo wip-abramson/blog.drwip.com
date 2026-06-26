@@ -19,4 +19,4 @@ We are indeed rearchitecting the digital environment within which knowledge work
 
 A good reminder of the importance and the interplay between bottom up exploration and top down structure. The desire lines get worn by people moving through the space; the work is reading which paths to pave and which to let the grass grow back over.
 
-Definitely worth checking out this thought provoking guide from Rafa and Sachin: https://ai.protocolized.dev/#cover.
+Definitely worth checking out this thought provoking guide from Rafa and Sachin: [https://ai.protocolized.dev/#cover](https://ai.protocolized.dev/#cover).
