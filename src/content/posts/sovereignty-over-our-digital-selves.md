@@ -2,7 +2,7 @@
 title: "Sovereignty over our Digital Selves"
 description: "Exploring sovereignty, freedom and the meaning of self-sovereign identity"
 date: 2026-05-19
-tags: ["freedom", "sovereignty", "identity", "identity systems", "meaning"]
+tags: ["freedom", "sovereignty", "identity", "identity systems", "meaning", "digital-self"]
 draft: false
 ---
 

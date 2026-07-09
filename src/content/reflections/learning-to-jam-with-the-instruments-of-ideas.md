@@ -3,7 +3,7 @@ title: "Learning to Jam with the Instruments of Ideas"
 source_url: "https://summerlightning.substack.com/p/llms-pre-commodify-ideas"
 source_title: "LLMs Pre-Commodify Ideas"
 author: "Sachin"
-site: "Summer Lightning"
+site: "https://summerlightning.substack.com"
 date: 2026-06-13
 tags: ["creativity", "ideas", "LLMs"]
 draft: false
