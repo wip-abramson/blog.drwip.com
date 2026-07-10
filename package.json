@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "new:reflection": "node scripts/new-reflection.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
