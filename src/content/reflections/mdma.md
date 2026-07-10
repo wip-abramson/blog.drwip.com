@@ -23,7 +23,7 @@ Is this similar to what is happening when the dry structures of the digital soft
 
 The video got me thinking that one of the key places that protocols sit is as a mediation layer between the wet and the dry layers of reality. Trying to shape, influence and create some bounds over, the effects/disturbances of the impact when these two structures with very different properties interact/collide. 
 
-The alien, inhospitable reality of a realm constructed of purely 0's and 1's. Human reality is far more complex, rich and nuanced. See [Attuning to Our Quantum Reality](/reflections/attuning-to-our-quantum-reality) for more on this. Jeff's talk dives into all the ways the Human OS is not built to extend ourselves into these digital realms. We have not even begun to develop the sensory package, safety apparatus and protocols that could give us confidence we can inhabit this realm and navigate the risks it presents intelligently. 
+The digital world is an alien, inhospitable realm constructed of purely 0's and 1's. Human reality is far more complex, rich, alive and nuanced. See [Attuning to Our Quantum Reality](/reflections/attuning-to-our-quantum-reality) for more on this. Jeff's talk dives into all the ways the Human OS is not built to extend ourselves into these digital realms. We have not even begun to develop the sensory package, safety apparatus and protocols that could give us confidence we can inhabit this realm and navigate the risks it presents intelligently. 
 
 Not only is this alien realm inhospitable, but it is inhabited by wolves. Powerful actors with unknown capabilities that are difficult to sense, perceive and reason about. These wolves are hunting our pattern of life and we are all vulnerable.
 

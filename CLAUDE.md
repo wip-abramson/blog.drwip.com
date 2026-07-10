@@ -21,6 +21,8 @@ npm run dev      # dev server at http://localhost:4321 (drafts visible here)
 npm run build    # production build to ./dist (drafts excluded)
 npm run preview  # serve the built ./dist locally
 npm run check    # astro check — type-check + validate content collection schemas
+
+npm run new:reflection -- <source-url>   # scaffold src/content/reflections/<slug>.md
 ```
 
 Requires Node 20+ (Netlify builds on Node 22). There is no test suite; `npm run
