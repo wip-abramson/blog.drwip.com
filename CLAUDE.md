@@ -4,8 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`thinking.drwip.com` — Will Abramson's (Dr Wip) "Thought Seeds": a static Astro
-site of writing and a living library, built as a slow-growing digital garden.
+`thinking.drwip.com` — Will Abramson's (Dr Wip) "Landscape of Thought": a
+static Astro site built as a slow-growing digital garden. The landscape is the
+whole; *thought seeds* (the posts) are one thing growing in it, alongside
+reflections, a living library, and an antilibrary, all connected by trails.
 Static output, no client JS beyond what Astro emits — with one deliberate
 exception: `/library/antilibrary` ships an inline script that reshuffles the
 shelf on every load (an antilibrary with a fixed order is a reading queue,

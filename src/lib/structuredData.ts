@@ -42,7 +42,7 @@ export const blogSchema = {
   "@context": "https://schema.org",
   "@type": "Blog",
   "@id": `${SITE_URL}/#blog`,
-  name: "Dr Wip · Thought Seeds",
+  name: "Dr Wip · Landscape of Thought",
   url: SITE_URL,
   description:
     "Unpolished thoughts by Will Abramson (Dr Wip), shared in the open to grow into whatever they become.",

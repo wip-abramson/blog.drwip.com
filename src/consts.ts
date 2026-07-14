@@ -4,10 +4,10 @@
 
 export const SITE_URL = "https://thinking.drwip.com";
 
-export const SITE_TITLE = "Dr Wip · Thought Seeds";
+export const SITE_TITLE = "Dr Wip · Landscape of Thought";
 
 export const SITE_DESCRIPTION =
-  "Thought seeds by Will Abramson (Dr Wip) — unpolished thoughts, shared in the open to grow into whatever they become.";
+  "A landscape of thought by Will Abramson (Dr Wip) — thought seeds, reflections, and a living library, connected by trails and shared in the open to grow into whatever they become.";
 
 export const AUTHOR = "Will Abramson";
 
