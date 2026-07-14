@@ -3,6 +3,8 @@ import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ConceptTags from "../../components/ConceptTags.astro";
+import Trails from "../../components/Trails.astro";
+import Trailheads from "../../components/Trailheads.astro";
 import {
   getReflections,
   sourceHost,
@@ -90,6 +92,10 @@ const { Content } = await render(reflection);
     <div class="prose mt-8">
       <Content />
     </div>
+
+    <!-- The edges: out of this reflection, and in from elsewhere ----- -->
+    <Trails entry={reflection} />
+    <Trailheads collection="reflections" id={reflection.id} />
 
     <!-- Footer navigation -------------------------------------------- -->
     <nav

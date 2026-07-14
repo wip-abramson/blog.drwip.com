@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostListItem from "../../components/PostListItem.astro";
 import ReflectionItem from "../../components/ReflectionItem.astro";
 import LibraryListItem from "../../components/LibraryListItem.astro";
+import AntibookItem from "../../components/AntibookItem.astro";
 import { getAllConcepts, conceptTitle, type Concept } from "../../lib/concepts";
 
 /** One page per concept. */
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const { concept } = Astro.props;
-const { posts, reflections, books } = concept;
+const { posts, reflections, books, antibooks } = concept;
 
 // The concept page is the concept's home, so it gets a proper capitalised
 // name ("Identity") — the "#identity" hashtag form is only for wayfinding.
@@ -30,6 +31,7 @@ const phrase = [
   reflections.length &&
     `${reflections.length} ${reflections.length === 1 ? "reflection" : "reflections"}`,
   books.length && `${books.length} ${books.length === 1 ? "book" : "books"}`,
+  antibooks.length && `${antibooks.length} unread`,
 ]
   .filter(Boolean)
   .join(" · ");
@@ -48,7 +50,7 @@ const phrase = [
         {displayName}
       </h1>
       <p class="mt-3 text-brand-muted">
-        {phrase} growing from this concept.
+        {phrase} gathered under this concept.
       </p>
     </header>
 
@@ -96,6 +98,26 @@ const phrase = [
             <div class="divide-y divide-brand-border">
               {books.map((entry) => (
                 <LibraryListItem entry={entry} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        antibooks.length > 0 && (
+          <section
+            class:list={[
+              (posts.length > 0 || reflections.length > 0 || books.length > 0) &&
+                "mt-10 border-t border-brand-border pt-8",
+            ]}
+          >
+            <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
+              From the antilibrary
+            </h2>
+            <div class="divide-y divide-brand-border">
+              {antibooks.map((entry) => (
+                <AntibookItem entry={entry} />
               ))}
             </div>
           </section>

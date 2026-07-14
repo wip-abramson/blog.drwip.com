@@ -1,0 +1,97 @@
+---
+import ConceptTags from "./ConceptTags.astro";
+import Trails from "./Trails.astro";
+import { getProvenance, type Antibook } from "../lib/antilibrary";
+
+/**
+ * One book in the antilibrary — unread, so there is no annotation page to
+ * show, only the pull: where it was recommended and why it caught. The entry
+ * carries a stable `id` so it is addressable at
+ * `/library/antilibrary#<slug>`. Also used on concept pages.
+ */
+interface Props {
+  entry: Antibook;
+}
+
+const { entry } = Astro.props;
+const { title, author, published, status, link, why, tags } = entry.data;
+
+const provenance = await getProvenance(entry);
+// "wanted" is the resting state of the shelf — only note the exceptions.
+const statusLabel =
+  status === "owned"
+    ? "on the shelf, unread"
+    : status === "started"
+      ? "begun, set down"
+      : null;
+
+// Any of these may be missing — an entry can be a title and nothing else.
+const meta = [author, published, statusLabel].filter(Boolean).join(" · ");
+---
+
+<article id={entry.id} class="group scroll-mt-24 py-6 first:pt-0">
+  <h3 class="font-heading text-lg leading-snug text-brand-text">
+    {
+      link ? (
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="transition-colors hover:text-brand-accent"
+        >
+          {title} ↗
+        </a>
+      ) : (
+        title
+      )
+    }
+  </h3>
+
+  {meta && <p class="mt-0.5 font-mono text-xs text-brand-muted">{meta}</p>}
+
+  {why && <p class="mt-2 leading-relaxed text-brand-muted">{why}</p>}
+
+  {
+    provenance && (
+      <p class="mt-2 text-sm text-brand-muted">
+        <span class="font-mono text-xs uppercase tracking-widest">via</span>{" "}
+        {provenance.url ? (
+          <a
+            href={provenance.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+          >
+            {provenance.label} ↗
+          </a>
+        ) : provenance.internal ? (
+          <a
+            href={provenance.internal.href}
+            class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+          >
+            {provenance.label}
+          </a>
+        ) : (
+          provenance.label
+        )}
+        {/* Both links present: the credit points out to the recommendation,
+            this points back to what on this site it came from. */}
+        {provenance.url && provenance.internal && (
+          <>
+            {" — from "}
+            <a
+              href={provenance.internal.href}
+              class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+            >
+              {provenance.internal.title}
+            </a>
+          </>
+        )}
+      </p>
+    )
+  }
+
+  <Trails entry={entry} compact class="mt-3" />
+
+  <ConceptTags tags={tags} class="mt-3" />
+</article>

@@ -27,10 +27,15 @@ summary: >-
 # influence: >-
 #   ...
 
-# Posts that genuinely grew from this book.
-seeded:
-  - sovereignty-over-our-digital-selves
-  - appreciating-and-encouraging-unpredictability
+# Trails out of this book. Exactly one destination each — post, reflection,
+# book, or antibook — with an optional `note` (what the connection is, in your
+# words) and an optional `rel` (a truer label than the destination's own name).
+# Each trail grows a "Trails here" link back on the far end.
+trails:
+  - post: sovereignty-over-our-digital-selves
+    rel: grew from this
+  - post: appreciating-and-encouraging-unpredictability
+    rel: grew from this
 
 cover: ./cover.jpg
 

@@ -2,9 +2,13 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import LibraryListItem from "../../components/LibraryListItem.astro";
 import { getLibrary } from "../../lib/library";
+import { getAntilibrary } from "../../lib/antilibrary";
 
 const entries = await getLibrary();
 const count = entries.length;
+
+// The unread shelf lives next door — announced here, not mixed in.
+const unread = (await getAntilibrary()).length;
 ---
 
 <BaseLayout
@@ -32,6 +36,25 @@ const count = entries.length;
         <p class="border-t border-brand-border py-12 leading-relaxed text-brand-muted">
           The shelf is empty for now — the first book is being logged.
         </p>
+      )
+    }
+
+    {
+      unread > 0 && (
+        <a
+          href="/library/antilibrary/"
+          class="group mt-10 flex items-baseline justify-between gap-4 border-t border-brand-border pt-8"
+        >
+          <span>
+            <span class="font-heading text-xl text-brand-text transition-colors group-hover:text-brand-accent">
+              The Antilibrary →
+            </span>
+            <span class="mt-1 block leading-relaxed text-brand-muted">
+              {unread} {unread === 1 ? "book" : "books"} not yet read — kept for
+              where they came from, and the pull they still exert.
+            </span>
+          </span>
+        </a>
       )
     }
   </div>

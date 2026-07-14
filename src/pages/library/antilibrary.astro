@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AntibookItem from "../../components/AntibookItem.astro";
+import { getAntilibrary, shuffle } from "../../lib/antilibrary";
+
+// The shelf has no true order — a reading queue is exactly the fiction an
+// antilibrary refuses. Shuffled at build (so a reader without JS still meets a
+// different shelf on each deploy) and again on load (see the script below).
+const entries = shuffle(await getAntilibrary());
+const count = entries.length;
+---
+
+<BaseLayout
+  title="The Antilibrary"
+  description="Books Dr Wip has not read — where each was recommended, and why it pulls."
+>
+  <div class="mx-auto max-w-[720px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <p
+        class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted"
+      >
+        Library
+      </p>
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">
+        The Antilibrary
+      </h1>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        The books not read — and, honestly, most of them never will be. Kept
+        anyway, because an unread shelf is a map of what you know you don't
+        know. Each entry records where the recommendation came from and why it
+        caught.
+      </p>
+    </header>
+
+    {
+      count > 0 ? (
+        <div
+          id="shelf"
+          class="divide-y divide-brand-border border-t border-brand-border pt-8"
+        >
+          {entries.map((entry) => (
+            <AntibookItem entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="border-t border-brand-border py-12 leading-relaxed text-brand-muted">
+          Nothing owed yet — the first unread book is being logged.
+        </p>
+      )
+    }
+
+    {/*
+      Reshuffle on every load, so no book gets to be permanently first. The
+      nodes are *moved*, not reordered with CSS `order`, because the dividing
+      rules between entries follow DOM order. Inline and placed directly after
+      the shelf: it runs during parse, before first paint, so the reader never
+      sees the build-time order flick to another.
+    */}
+    <script is:inline>
+      {
+        const shelf = document.getElementById("shelf");
+        if (shelf) {
+          const books = [...shelf.children];
+          for (let i = books.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [books[i], books[j]] = [books[j], books[i]];
+          }
+          for (const book of books) shelf.appendChild(book);
+        }
+      }
+    </script>
+
+    <p class="mt-10 border-t border-brand-border pt-8">
+      <a
+        href="/library"
+        class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+      >
+        ← The books actually read
+      </a>
+    </p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,142 @@
+# The Antilibrary — books not yet read.
+#
+# One block per book. `id` is the slug (used as the deep-link anchor, e.g.
+# /library/antilibrary#seeing-like-a-state) and must be unique.
+#
+# The point of an entry is not the book, it's the *pull*: where the
+# recommendation came from, and why it caught. `tags` wire it into /concepts
+# alongside the posts, reflections, and read books it will one day join.
+#
+# Only `title` and `author` are required, and every other field is better
+# absent than guessed — a `why` you didn't write, or a year nobody checked, is
+# worth less than nothing here. Leave it out; fill it in when you know.
+#
+# via:
+#   who:  who pointed at it
+#   where: the occasion, in your words — a podcast, a footnote, a pub
+#   url:  the recommendation itself, out on the web (the credit links here)
+#   book: slug of a book already in src/content/library/ it came from
+#   reflection: slug of a reflection it came from
+# `url` and `book`/`reflection` can both be set: the credit links out to the
+# recommendation, and a "from <title>" link threads back to the shelf.
+#
+# When a book is actually read, it graduates: delete the block here and give
+# it a folder in src/content/library/<slug>/book.yaml.
+
+- id: the-black-swan
+  title: The Black Swan
+  author: Nassim Nicholas Taleb
+  status: started
+  added: "2026-07"
+  # via:
+  #   who:
+  #   where:
+  #   url:
+  # why: >-
+  # tags:
+
+# --- top of mind, July 2026 — scaffolds awaiting their why/via/tags ---------
+
+- id: seeing-like-a-state
+  title: Seeing Like a State
+  author: James C. Scott
+  added: "2026-07"
+  # via:
+  #   who:
+  #   where:
+  #   url:
+  why: >-
+    I want to dive deeper into legibility.
+  # tags:
+
+- id: alive
+  title: "Alive: The Hidden Intelligence of the Living World"
+  author: Melanie Challenger
+  added: "2026-07"
+  # via:
+  # why: >-
+  # tags:
+
+- id: other-minds
+  title: "Other Minds: The Octopus, the Sea, and the Deep Origins of Consciousness"
+  author: Peter Godfrey-Smith
+  published: 2016
+  added: "2026-07"
+  via:
+    who: Namid Stillman
+    where: the third Centuriae writing retreat, at Hook Hotel — cited in "Models of the World"
+    url: https://centuriae.github.io/posts/35.html
+  why: >-
+    It relates to my piece "A Process of Becoming" — how embodied beings
+    experience and enact their world.
+  # tags:
+  trails:
+    - external:
+        url: https://centuriae.github.io/posts/32.html
+        title: "A Process of Becoming: Making Sense of our Technologically Mediated Reality"
+      rel: my writing, elsewhere
+
+- id: the-eerie-silence
+  title: "The Eerie Silence: Searching for Ourselves in the Universe"
+  author: Paul Davies
+  added: "2026-07"
+  via:
+    who: Merel
+    where: the third Centuriae writing retreat, at Hook Hotel — "my new favorite book" in "Are We the Martians Under the Bed?"
+    url: https://centuriae.github.io/posts/27.html
+  # why: >-
+  # tags:
+
+- id: the-stack
+  title: The Stack
+  author: Benjamin H. Bratton
+  added: "2026-07"
+  via:
+    who: Benjamin H. Bratton
+    where: >-
+      his lecture in London — "What is agency? Placebo Culture, Agency theater,
+      agentic AI"
+    url: https://agentworld.antikythera.org/
+    # The lecture is the thing that reflection reflects on — so the credit
+    # links out to Antikythera and threads back to the reflection here.
+    reflection: on-hybrid-human-ai-societies
+  why: >-
+    I want to learn more about Bratton's thinking after attending that lecture.
+  # tags:
+  # Trails out of this book. Exactly one destination each — post, reflection,
+  # book (the read shelf), or antibook — plus an optional note in your words.
+  # The destination page grows a "Circling this, unread" link back.
+  trails:
+    - reflection: on-hybrid-human-ai-societies
+      # note: >-   ← what the connection is; yours to write.
+
+- id: maintenance-of-everything
+  title: Maintenance of Everything
+  author: Stewart Brand
+  added: "2026-07"
+  # via:
+  # why: >-
+  # tags:
+
+- id: and-the-garden-is-you
+  title: "And the Garden Is You: Essays on Fieldwork, Writingwork, and Readingwork"
+  author: Michael Taussig
+  published: 2024
+  status: owned
+  added: "2026-07"
+  link: https://press.uchicago.edu/ucp/books/book/chicago/A/bo221276750.html
+  via:
+    where: stumbled on it reviewing my Amazon list
+  why: >-
+    It feels so aligned with this living landscape I am trying to create.
+  # tags:
+
+- id: imagination-a-manifesto
+  title: "Imagination: A Manifesto"
+  author: Ruha Benjamin
+  added: "2026-07"
+  via:
+    where: London Data Week, at King's College
+    url: https://londondataweek.org/ldw26-events/#breaking-down-ai-technologies-myths-realities
+  # why: >-
+  # tags:

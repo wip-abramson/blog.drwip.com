@@ -6,7 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `thinking.drwip.com` — Will Abramson's (Dr Wip) "Thought Seeds": a static Astro
 site of writing and a living library, built as a slow-growing digital garden.
-Static output, no client JS beyond what Astro emits. Deployed on Netlify.
+Static output, no client JS beyond what Astro emits — with one deliberate
+exception: `/library/antilibrary` ships an inline script that reshuffles the
+shelf on every load (an antilibrary with a fixed order is a reading queue,
+which is the fiction it exists to deny). Deployed on Netlify.
 
 > **Canonical domain is `thinking.drwip.com`.** The space was renamed from the
 > now-deprecated `blog.drwip.com` (kept live only as a redirect). The domain is
@@ -31,8 +34,24 @@ frontmatter.
 
 ## Architecture
 
-Astro content collections (`src/content.config.ts`) define two collections;
+Astro content collections (`src/content.config.ts`) define four collections;
 everything else derives from them.
+
+**Trails are the site's one edge primitive.** Every collection carries a
+`trails` array (defined once as `trail` at the top of `content.config.ts`).
+A trail names exactly one destination — `post`, `reflection`, `book`, or
+`antibook` — with an optional `note` (what the connection *is*, in Dr Wip's
+words) and an optional `rel` (a truer label than the destination's own kind,
+e.g. `grew from this`). The schema rejects a trail with zero or two
+destinations at build time.
+
+Trails are **walkable from both ends and authored once**: `src/lib/trails.ts`
+resolves them outward (`getTrails`) and derives the return path inward
+(`getTrailheads`, which scans all four collections for edges pointing at an
+entry). Pages render them via `Trails.astro` ("Trails from here") and
+`Trailheads.astro` ("Trails here"). Never hand-author a reciprocal link — the
+far end is derived. This replaced the old bespoke `posts.reflections` and
+`library.seeded` fields; one grammar, not four dialects.
 
 - **`posts`** — `.md`/`.mdx` in `src/content/posts/`. Filename is the URL slug.
   Required frontmatter: `title`, `description`, `date`, `tags`, `draft`. Many
@@ -42,11 +61,23 @@ everything else derives from them.
 - **`library`** — folder-per-book under `src/content/library/<slug>/book.yaml`
   plus images. The folder name is the canonical slug (the loader strips
   `/book.yaml`). Entries are YAML *records* with no Markdown body: a book plus
-  handwritten annotation images. `seeded` is a typed `reference("posts")` array
-  linking a book to the posts it actually seeded.
+  handwritten annotation images. A book links to the writing it seeded with a
+  `trail` carrying `rel: grew from this`.
+- **`antilibrary`** — the books *not* read: a single YAML list at
+  `src/content/library/antilibrary.yaml`, loaded with `file()`, one block per
+  book with its own `id` (the deep-link anchor at `/library/antilibrary#<id>`).
+  Adding a book should cost a block of text, not a folder — that's why it isn't
+  folder-per-book like `library`. `via` records where the recommendation came
+  from and can carry typed `reference()`s back to a library book or a
+  reflection; `src/lib/antilibrary.ts#getProvenance` resolves that into the
+  single "via …" credit line, preferring an internal link over an external one.
+  A book that actually gets read *graduates*: delete its block and give it a
+  folder under `src/content/library/`.
 
 **Concepts are the cross-cutting spine.** `src/lib/concepts.ts` aggregates the
-`tags` from *both* posts and library entries into browsable `/concepts` pages.
+`tags` from posts, reflections, library *and* antilibrary entries into
+browsable `/concepts` pages — an unread book takes its place on the map beside
+the writing it might one day feed.
 There is no concept registry — tagging consistently is the only input, and slugs
 are derived (`"identity systems"` → `/concepts/identity-systems/`). When adding
 content that should join the map, match existing tag spelling exactly.

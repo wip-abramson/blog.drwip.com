@@ -1,0 +1,51 @@
+---
+import { getTrailheads, type TrailCollection } from "../lib/trails";
+
+/**
+ * The other end of a trail. Anything on the site can lay a trail at anything
+ * else; this renders the return path on whatever it points at, so every edge
+ * is walkable from both ends and nothing is a dead end. Nobody authors the
+ * link twice — this side is derived.
+ *
+ * Renders nothing when no trail reaches here. Place it near the foot of a page.
+ */
+interface Props {
+  /** Which collection the surrounding page belongs to. */
+  collection: TrailCollection;
+  /** The surrounding entry's id. */
+  id: string;
+}
+
+const { collection, id } = Astro.props;
+const trailheads = await getTrailheads(collection, id);
+---
+
+{
+  trailheads.length > 0 && (
+    <section class="mt-12 border-t border-brand-border pt-8">
+      <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted">
+        Trails here
+      </h2>
+      <ul class="space-y-3">
+        {trailheads.map((trail) => (
+          <li class="leading-relaxed">
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+              {trail.kind}
+            </span>
+            <a
+              href={trail.href}
+              class="ml-2 font-heading text-brand-text transition-colors hover:text-brand-accent"
+            >
+              {trail.title}
+            </a>
+            {trail.note && (
+              <span class="mt-0.5 block text-sm text-brand-muted">
+                {trail.note}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

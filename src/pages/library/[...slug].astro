@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import { getEntries } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ConceptTags from "../../components/ConceptTags.astro";
-import PostListItem from "../../components/PostListItem.astro";
+import Trails from "../../components/Trails.astro";
+import Trailheads from "../../components/Trailheads.astro";
 import { getLibrary, formatReadDate, type LibraryEntry } from "../../lib/library";
 
 /**
@@ -24,13 +24,8 @@ interface Props {
 }
 
 const { entry }: Props = Astro.props;
-const { title, author, status, read, published, link, influence, summary, tags, annotations, seeded } =
+const { title, author, status, read, published, link, influence, summary, tags, annotations } =
   entry.data;
-
-// Posts this book seeded — curated, build-time validated references.
-const seededPosts = (seeded.length > 0 ? await getEntries(seeded) : []).filter(
-  (post) => (import.meta.env.PROD ? post.data.draft !== true : true),
-);
 
 let linkHost = "";
 if (link) {
@@ -133,21 +128,9 @@ const readLabel = read
 
     <ConceptTags tags={tags} class="mt-8" />
 
-    <!-- Posts this book seeded — curated heritage, not tag-matching -- -->
-    {
-      seededPosts.length > 0 && (
-        <section class="mt-12 border-t border-brand-border pt-8">
-          <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
-            What grew from this
-          </h2>
-          <div class="divide-y divide-brand-border">
-            {seededPosts.map((post) => (
-              <PostListItem post={post} />
-            ))}
-          </div>
-        </section>
-      )
-    }
+    <!-- The edges: out of this book, and in from elsewhere ----------- -->
+    <Trails entry={entry} />
+    <Trailheads collection="library" id={entry.id} />
 
     <p class="mt-12">
       <a
