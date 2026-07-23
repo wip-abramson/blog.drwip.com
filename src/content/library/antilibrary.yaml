@@ -35,6 +35,32 @@
   # why: >-
   # tags:
 
+- id: the-invention-of-technology
+  title: "The Invention of Technology: An Intellectual History with André Leroi-Gourhan"
+  author: Nathan Schlanger
+  published: 2026
+  added: "2026-07"
+  link: https://www.cambridge.org/core/books/invention-of-technology/6757BBD5D668C8983A5374B6F7A861A7
+  via:
+    who: Memory Research Study Group
+    where: the Protocol Institute
+  # why: >-
+  # tags:
+
+- id: gesture-and-speech
+  title: Gesture and Speech
+  author: André Leroi-Gourhan
+  published: 2018
+  added: "2026-07"
+  link: https://mitpress.mit.edu/9780262515429/gesture-and-speech/
+  via:
+    who: Memory Research Study Group
+    where: the session at the Protocol Institute on 16 July 2026 — "The Freeing of Memory"
+  why: >-
+    We read the chapter "The Freeing of Memory". Its analysis was super
+    fascinating; I want the whole book.
+  # tags:
+
 # --- top of mind, July 2026 — scaffolds awaiting their why/via/tags ---------
 
 - id: seeing-like-a-state
@@ -138,5 +164,16 @@
   via:
     where: London Data Week, at King's College
     url: https://londondataweek.org/ldw26-events/#breaking-down-ai-technologies-myths-realities
+  # why: >-
+  # tags:
+
+- id: the-crooked-timber-of-humanity
+  title: "The Crooked Timber of Humanity: Chapters in the History of Ideas"
+  author: Isaiah Berlin
+  added: "2026-07"
+  via:
+    who: Venkatesh Rao
+    where: his piece in Protocolized — "The Crooked Timber of AI"
+    url: https://substack.com/home/post/p-207796149
   # why: >-
   # tags:
