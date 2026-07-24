@@ -167,6 +167,21 @@
   # why: >-
   # tags:
 
+- id: what-is-intelligence
+  title: "What Is Intelligence?: Lessons from AI About Evolution, Computing, and Minds"
+  author: Blaise Agüera y Arcas
+  published: 2025
+  added: "2026-07"
+  link: https://mitpress.mit.edu/9780262049955/what-is-intelligence/
+  via:
+    who: Blaise Agüera y Arcas
+    where: >-
+      his Long Now talk — a great one — and again through Antikythera, who
+      publish the whole book online
+    url: https://longnow.org/talks/02025-aguera-y-arcas/
+  # why: >-
+  # tags:
+
 - id: the-crooked-timber-of-humanity
   title: "The Crooked Timber of Humanity: Chapters in the History of Ideas"
   author: Isaiah Berlin
