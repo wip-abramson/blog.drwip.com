@@ -4,6 +4,7 @@ import PostListItem from "../../components/PostListItem.astro";
 import ReflectionItem from "../../components/ReflectionItem.astro";
 import LibraryListItem from "../../components/LibraryListItem.astro";
 import AntibookItem from "../../components/AntibookItem.astro";
+import QuestionItem from "../../components/QuestionItem.astro";
 import { getAllConcepts, conceptTitle, type Concept } from "../../lib/concepts";
 
 /** One page per concept. */
@@ -20,13 +21,15 @@ interface Props {
 }
 
 const { concept } = Astro.props;
-const { posts, reflections, books, antibooks } = concept;
+const { posts, reflections, books, antibooks, questions } = concept;
 
 // The concept page is the concept's home, so it gets a proper capitalised
 // name ("Identity") — the "#identity" hashtag form is only for wayfinding.
 const displayName = conceptTitle(concept.name);
 
 const phrase = [
+  questions.length &&
+    `${questions.length} ${questions.length === 1 ? "question" : "questions"}`,
   posts.length && `${posts.length} ${posts.length === 1 ? "note" : "notes"}`,
   reflections.length &&
     `${reflections.length} ${reflections.length === 1 ? "reflection" : "reflections"}`,
@@ -39,7 +42,7 @@ const phrase = [
 
 <BaseLayout
   title={displayName}
-  description={`Notes and books by Dr Wip on ${concept.name}.`}
+  description={`Questions, notes and books by Dr Wip on ${concept.name}.`}
 >
   <div class="mx-auto max-w-[720px] px-6">
     <header class="pb-8 pt-20 sm:pt-24">
@@ -56,12 +59,33 @@ const phrase = [
 
     <div class="border-t border-brand-border pt-8">
       {
+        questions.length > 0 && (
+          <section>
+            <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
+              Open questions
+            </h2>
+            <div class="divide-y divide-brand-border">
+              {questions.map((question) => (
+                <QuestionItem question={question} compact />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
         posts.length > 0 && (
-          <div class="divide-y divide-brand-border">
-            {posts.map((post) => (
-              <PostListItem post={post} />
-            ))}
-          </div>
+          <section
+            class:list={[
+              questions.length > 0 && "mt-10 border-t border-brand-border pt-8",
+            ]}
+          >
+            <div class="divide-y divide-brand-border">
+              {posts.map((post) => (
+                <PostListItem post={post} />
+              ))}
+            </div>
+          </section>
         )
       }
 
@@ -69,7 +93,8 @@ const phrase = [
         reflections.length > 0 && (
           <section
             class:list={[
-              posts.length > 0 && "mt-10 border-t border-brand-border pt-8",
+              (questions.length > 0 || posts.length > 0) &&
+                "mt-10 border-t border-brand-border pt-8",
             ]}
           >
             <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-brand-muted">
@@ -88,7 +113,9 @@ const phrase = [
         books.length > 0 && (
           <section
             class:list={[
-              (posts.length > 0 || reflections.length > 0) &&
+              (questions.length > 0 ||
+                posts.length > 0 ||
+                reflections.length > 0) &&
                 "mt-10 border-t border-brand-border pt-8",
             ]}
           >
@@ -108,7 +135,10 @@ const phrase = [
         antibooks.length > 0 && (
           <section
             class:list={[
-              (posts.length > 0 || reflections.length > 0 || books.length > 0) &&
+              (questions.length > 0 ||
+                posts.length > 0 ||
+                reflections.length > 0 ||
+                books.length > 0) &&
                 "mt-10 border-t border-brand-border pt-8",
             ]}
           >

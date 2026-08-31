@@ -1,5 +1,5 @@
 ---
-import { LINKS } from "../consts";
+import { LINKS, FOOTER_LINKS } from "../consts";
 
 const year = new Date().getFullYear();
 ---
@@ -10,6 +10,16 @@ const year = new Date().getFullYear();
   >
     <span>© {year} Will Abramson</span>
     <div class="flex items-center gap-5">
+      {
+        FOOTER_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class="transition-colors hover:text-brand-accent"
+          >
+            {link.label}
+          </a>
+        ))
+      }
       <a
         href={LINKS.main}
         target="_blank"

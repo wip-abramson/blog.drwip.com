@@ -11,7 +11,7 @@ import { glob, file } from "astro/loaders";
  * the destination page grows a "Trails here" section in return, without
  * anyone having to author the link twice.
  *
- * A fifth destination, `external`, points out of the site entirely — writing
+ * One further destination, `external`, points out of the site entirely — writing
  * of Dr Wip's that lives elsewhere, an essay worth standing beside. It lacks
  * *reciprocity*: nothing out there can link back, so it never appears in
  * anyone's "Trails here". It does not lack *traversal* — the click happens on
@@ -31,6 +31,7 @@ const trail = z
     reflection: reference("reflections").optional(),
     book: reference("library").optional(),
     antibook: reference("antilibrary").optional(),
+    question: reference("questions").optional(),
     /** Somewhere off-site. Needs its own title — nothing here knows its name. */
     external: z
       .object({
@@ -45,11 +46,17 @@ const trail = z
   })
   .refine(
     (t) =>
-      [t.post, t.reflection, t.book, t.antibook, t.external].filter(Boolean)
-        .length === 1,
+      [
+        t.post,
+        t.reflection,
+        t.book,
+        t.antibook,
+        t.question,
+        t.external,
+      ].filter(Boolean).length === 1,
     {
       message:
-        "each trail needs exactly one destination: post, reflection, book, antibook, or external",
+        "each trail needs exactly one destination: post, reflection, book, antibook, question, or external",
     },
   );
 
@@ -208,6 +215,57 @@ const antilibrary = defineCollection({
 });
 
 /**
+ * The `questions` collection — the questions the landscape is organised around.
+ *
+ * Not writing but the thing writing is downstream of: a question Dr Wip is
+ * actually carrying, kept whole and in its original wording rather than
+ * dissolved into the posts that circle it. Like the antilibrary these are a
+ * single YAML list — asking should cost a block of text, not a folder — and
+ * each is addressable at `/questions#<id>`.
+ *
+ * A question is a first-class trail destination, so a post can say it is one
+ * attempt at answering this, and the question grows the return path for free.
+ * `tags` put it on the `/concepts` map beside the writing and books circling
+ * the same ground.
+ */
+const questions = defineCollection({
+  loader: file("./src/content/questions.yaml"),
+  schema: z.object({
+    // --- required -------------------------------------------------------
+    /** The question itself, in full and in the words it was asked in. */
+    question: z.string(),
+
+    // --- everything else: absent beats guessed ---------------------------
+
+    /** A short handle for links and trails, where the whole question is too
+     * long to be a link. Falls back to the question itself. */
+    short: z.string().optional(),
+    /** Where the question came from — the occasion that provoked it. */
+    origin: z
+      .object({
+        /** The occasion, in your own words: a conference, a walk, a argument. */
+        where: z.string().optional(),
+        /** When it was first asked (YYYY-MM). */
+        when: z
+          .string()
+          .regex(/^\d{4}-(0[1-9]|1[0-2])$/, "origin.when must be YYYY-MM")
+          .optional(),
+        /** The occasion itself, if it lives somewhere linkable. */
+        url: z.string().url().optional(),
+      })
+      .optional(),
+    /** Why it is still open — what turns on the answer. */
+    why: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+
+    /** Edges out of this question — see `trail` above. An attempt at an
+     * answer is a trail, not a resolution: the question stays open. */
+    trails: trails(),
+  }),
+});
+
+/**
  * The `reflections` collection — "Thinking about".
  *
  * Short reflections in the margins of *other people's* writing: an essay, a
@@ -246,4 +304,10 @@ const reflections = defineCollection({
   }),
 });
 
-export const collections = { posts, library, antilibrary, reflections };
+export const collections = {
+  posts,
+  library,
+  antilibrary,
+  questions,
+  reflections,
+};

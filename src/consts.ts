@@ -22,11 +22,21 @@ export const LINKS = {
   rss: "/rss.xml",
 } as const;
 
-/** Primary navigation. */
+/**
+ * Primary navigation — the terrain itself, and nothing else. Kept to five:
+ * a header that lists everything stops being a way in.
+ */
 export const NAV_LINKS = [
   { href: "/posts", label: "Writing" },
   { href: "/reflections", label: "Thinking about" },
-  { href: "/concepts", label: "Concepts" },
+  { href: "/questions", label: "Questions" },
   { href: "/library", label: "Library" },
   { href: "/about", label: "About" },
 ] as const;
+
+/**
+ * Ways through the landscape rather than parts of it — carried in the footer.
+ * `/concepts` is reached through the content anyway: every `#tag` on every
+ * entry links into it, and each concept page links back to the index.
+ */
+export const FOOTER_LINKS = [{ href: "/concepts", label: "Concepts" }] as const;

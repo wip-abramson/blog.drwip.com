@@ -1,0 +1,45 @@
+# The questions the landscape is organised around.
+#
+# One block per question. `id` is the slug (used as the deep-link anchor, e.g.
+# /questions#everyone-an-issuer) and must be unique.
+#
+# A question is kept whole and in the words it was asked in — that wording is
+# the artefact. Everything around it is optional and better absent than
+# guessed: `why` is your line about what turns on the answer, `short` is a
+# handle for when the whole question is too long to be a link.
+#
+# origin:
+#   where: the occasion that provoked it, in your words
+#   when:  YYYY-MM, when it was first asked
+#   url:   the occasion itself, if it lives somewhere linkable
+#
+# `tags` put a question on the /concepts map beside the writing and books
+# circling the same ground. A post that takes a run at one is a trail pointing
+# here — an attempt, not a resolution. The question stays open.
+
+- id: everyone-an-issuer
+  question: >-
+    Are we building a future where everyone will be empowered as issuers,
+    verifiers and holders of cryptographically secured attestations, or will
+    the role of issuer and verifier be reserved for only a select few
+    "authorities" which individuals must submit to as mere holders?
+  origin:
+    where: Global Digital Collaboration conference, 2025
+  tags: ["identity systems", "cryptography", "sovereignty"]
+
+- id: identity-for-a-living-human
+  question: >-
+    What does an identity system that serves me as a loving, living, joyful
+    human navigating the unpredictability of life's rivers look like?
+  origin:
+    where: Global Digital Collaboration conference, 2025
+  tags: ["identity systems", "humanity", "unpredictability"]
+
+- id: ruggedizing-identity-systems
+  question: >-
+    How might we ruggedize identity systems against the uncertainty,
+    instability and violence of the climate breakdown we are witnessing unfold
+    and accelerate all around us?
+  origin:
+    where: Global Digital Collaboration conference, 2025
+  tags: ["identity systems", "infrastructure"]

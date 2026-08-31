@@ -8,44 +8,75 @@ import { getTrailheads, type TrailCollection } from "../lib/trails";
  * link twice — this side is derived.
  *
  * Renders nothing when no trail reaches here. Place it near the foot of a page.
+ *
+ * `compact` swaps the page-foot section for a labelled inline list, for use
+ * inside a list item rather than at the bottom of its own page. The label
+ * stays — unlike `Trails`, an incoming trail needs to say which way it runs.
  */
 interface Props {
   /** Which collection the surrounding page belongs to. */
   collection: TrailCollection;
   /** The surrounding entry's id. */
   id: string;
+  compact?: boolean;
+  class?: string;
 }
 
-const { collection, id } = Astro.props;
+const { collection, id, compact = false, class: className } = Astro.props;
 const trailheads = await getTrailheads(collection, id);
 ---
 
 {
-  trailheads.length > 0 && (
-    <section class="mt-12 border-t border-brand-border pt-8">
-      <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted">
-        Trails here
-      </h2>
-      <ul class="space-y-3">
-        {trailheads.map((trail) => (
-          <li class="leading-relaxed">
-            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
-              {trail.kind}
-            </span>
-            <a
-              href={trail.href}
-              class="ml-2 font-heading text-brand-text transition-colors hover:text-brand-accent"
-            >
-              {trail.title}
-            </a>
-            {trail.note && (
-              <span class="mt-0.5 block text-sm text-brand-muted">
-                {trail.note}
+  trailheads.length > 0 &&
+    (compact ? (
+      <div class:list={["mt-4", className]}>
+        <p class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+          Trails here
+        </p>
+        <ul class="mt-1 space-y-1">
+          {trailheads.map((trail) => (
+            <li class="text-sm leading-relaxed text-brand-muted">
+              <span class="font-mono text-xs uppercase tracking-widest">
+                {trail.kind}
+              </span>{" "}
+              <a
+                href={trail.href}
+                class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+              >
+                {trail.title}
+              </a>
+              {trail.note && ` — ${trail.note}`}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <section
+        class:list={["mt-12 border-t border-brand-border pt-8", className]}
+      >
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-brand-muted">
+          Trails here
+        </h2>
+        <ul class="space-y-3">
+          {trailheads.map((trail) => (
+            <li class="leading-relaxed">
+              <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">
+                {trail.kind}
               </span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
+              <a
+                href={trail.href}
+                class="ml-2 font-heading text-brand-text transition-colors hover:text-brand-accent"
+              >
+                {trail.title}
+              </a>
+              {trail.note && (
+                <span class="mt-0.5 block text-sm text-brand-muted">
+                  {trail.note}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
 }

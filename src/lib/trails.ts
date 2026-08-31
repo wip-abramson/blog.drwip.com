@@ -14,18 +14,20 @@ import { getCollection, getEntry, type CollectionEntry } from "astro:content";
  * an inline link in prose.
  */
 
-/** The four collections a trail can start from or point at. */
+/** The five collections a trail can start from or point at. */
 export type TrailCollection =
   | "posts"
   | "reflections"
   | "library"
-  | "antilibrary";
+  | "antilibrary"
+  | "questions";
 
 export type TrailEntry =
   | CollectionEntry<"posts">
   | CollectionEntry<"reflections">
   | CollectionEntry<"library">
-  | CollectionEntry<"antilibrary">;
+  | CollectionEntry<"antilibrary">
+  | CollectionEntry<"questions">;
 
 /** How each part of the landscape names itself on a trail. */
 const KIND_LABEL: Record<TrailCollection, string> = {
@@ -33,6 +35,7 @@ const KIND_LABEL: Record<TrailCollection, string> = {
   reflections: "Thinking about",
   library: "Library",
   antilibrary: "Antilibrary",
+  questions: "Question",
 };
 
 /** One end of a trail: somewhere on this site, with a name and a way there. */
@@ -55,6 +58,16 @@ export interface Trail extends Omit<TrailPlace, "collection" | "id"> {
   external?: boolean;
 }
 
+/**
+ * What an entry calls itself on a trail. Everything has a `title` except a
+ * question, which *is* its text — a short handle if one was written, else the
+ * whole question.
+ */
+function trailTitle(entry: TrailEntry): string {
+  const data = entry.data as { title?: string; short?: string; question?: string };
+  return data.title ?? data.short ?? data.question ?? entry.id;
+}
+
 /** Where an entry lives and what it's called. */
 export function trailPlace(
   collection: TrailCollection,
@@ -67,22 +80,26 @@ export function trailPlace(
         ? `/reflections/${entry.id}/`
         : collection === "library"
           ? `/library/${entry.id}/`
-          : `/library/antilibrary/#${entry.id}`;
+          : collection === "questions"
+            ? `/questions/#${entry.id}`
+            : `/library/antilibrary/#${entry.id}`;
 
   return {
     collection,
     id: entry.id,
-    title: entry.data.title,
+    title: trailTitle(entry),
     href,
     kind: KIND_LABEL[collection],
   };
 }
 
-/** A draft post is not part of the landscape in production. */
+/** A draft post, reflection or question is not part of the landscape in production. */
 function isHidden(collection: TrailCollection, entry: TrailEntry): boolean {
   if (!import.meta.env.PROD) return false;
   return (
-    (collection === "posts" || collection === "reflections") &&
+    (collection === "posts" ||
+      collection === "reflections" ||
+      collection === "questions") &&
     (entry.data as { draft?: boolean }).draft === true
   );
 }
@@ -97,6 +114,7 @@ function destinationOf(
   if (trail.book) return { collection: "library", id: trail.book.id };
   if (trail.antibook)
     return { collection: "antilibrary", id: trail.antibook.id };
+  if (trail.question) return { collection: "questions", id: trail.question.id };
   return undefined; // unreachable — the schema requires exactly one
 }
 
@@ -148,6 +166,7 @@ export async function getTrailheads(
     ["reflections", await getCollection("reflections")],
     ["library", await getCollection("library")],
     ["antilibrary", await getCollection("antilibrary")],
+    ["questions", await getCollection("questions")],
   ];
 
   const trailheads: Trail[] = [];

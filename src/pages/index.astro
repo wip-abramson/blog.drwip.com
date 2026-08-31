@@ -7,12 +7,17 @@ import {
   pickHomeReflections,
   sourceHost,
 } from "../lib/reflections";
+import { getQuestions } from "../lib/questions";
 import { IDENTITY, LINKS } from "../consts";
 import { personSchema, blogSchema } from "../lib/structuredData";
 
 const posts = await getPublishedPosts();
 const latest = posts.slice(0, 3);
 const hasMore = posts.length > latest.length;
+
+// The questions the landscape is circling — all of them, cycled through in
+// place by the script at the foot of the section.
+const questions = await getQuestions();
 
 // Homepage taster: the two latest reflections plus one random other.
 const reflections = await getReflections();
@@ -59,8 +64,138 @@ const moreReflections = reflections.length > homeReflections.length;
       </div>
     </section>
 
+    <!-- Sitting with -------------------------------------------------- -->
+    {
+      questions.length > 0 && (
+        <section
+          id="sitting-with"
+          class="border-t border-brand-border pt-10"
+          aria-label="A question I'm sitting with"
+        >
+          <div class="mb-4 flex items-baseline justify-between gap-4">
+            <h2 class="font-mono text-sm uppercase tracking-widest text-brand-muted">
+              Sitting with
+            </h2>
+            <a
+              href="/questions"
+              class="text-sm text-brand-muted transition-colors hover:text-brand-accent"
+            >
+              All questions →
+            </a>
+          </div>
+
+          {/*
+            Every question is in the DOM, stacked in one grid cell so the box
+            is as tall as the longest and nothing below it moves as they
+            change — centred in that box, so a short question reads as
+            composed rather than as a gap above the dots. Without JS the first
+            is simply the one that shows.
+          */}
+          <div id="question-rotator" class="grid items-center">
+            {questions.map((question, i) => (
+              <a
+                data-question
+                href={`/questions/#${question.id}`}
+                aria-hidden={i === 0 ? undefined : "true"}
+                tabindex={i === 0 ? undefined : -1}
+                class:list={[
+                  "col-start-1 row-start-1 motion-safe:transition-opacity motion-safe:duration-700",
+                  i === 0 ? "opacity-100" : "opacity-0 pointer-events-none",
+                ]}
+              >
+                <p class="font-heading text-xl leading-relaxed text-brand-text transition-colors hover:text-brand-accent sm:text-2xl sm:leading-relaxed">
+                  {question.data.question}
+                </p>
+              </a>
+            ))}
+          </div>
+
+          {/* Built by the script below, so nothing dead is served without JS. */}
+          <div id="question-dots" class="mt-5 hidden items-center gap-1" />
+        </section>
+      )
+    }
+
+    {/*
+      The second deliberate exception to the site's no-client-JS rule (the
+      first is the antilibrary shuffle). A single question on the homepage
+      would be a claim that it is *the* question; cycling is the honest
+      version. Inline, so it costs no extra request.
+
+      It stops rather than merely pauses on interaction, holds while hovered
+      or focused, and never auto-advances for a reader who has asked for
+      reduced motion — an unstoppable carousel of your own questions would be
+      a poor way to ask them.
+    */}
+    <script is:inline>
+      {
+        const rotator = document.getElementById("question-rotator");
+        const dots = document.getElementById("question-dots");
+        const items = rotator
+          ? [...rotator.querySelectorAll("[data-question]")]
+          : [];
+
+        if (rotator && dots && items.length > 1) {
+          const section = document.getElementById("sitting-with");
+          const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+          let index = 0;
+          let timer = null;
+
+          const show = (next) => {
+            items.forEach((item, i) => {
+              const on = i === next;
+              item.classList.toggle("opacity-100", on);
+              item.classList.toggle("opacity-0", !on);
+              item.classList.toggle("pointer-events-none", !on);
+              item.setAttribute("aria-hidden", String(!on));
+              item.tabIndex = on ? 0 : -1;
+            });
+            [...dots.children].forEach((dot, i) => {
+              dot.setAttribute("aria-current", String(i === next));
+              dot.firstChild.classList.toggle("bg-brand-accent", i === next);
+              dot.firstChild.classList.toggle("bg-brand-border", i !== next);
+            });
+            index = next;
+          };
+
+          const stop = () => {
+            clearInterval(timer);
+            timer = null;
+          };
+          const start = () => {
+            if (timer || still.matches) return;
+            timer = setInterval(() => show((index + 1) % items.length), 9000);
+          };
+
+          items.forEach((_, i) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "p-1.5";
+            dot.setAttribute("aria-label", `Question ${i + 1}`);
+            dot.appendChild(document.createElement("span")).className =
+              "block h-1.5 w-1.5 rounded-full bg-brand-border transition-colors";
+            // A reader who picks a question has taken over; stay on it.
+            dot.addEventListener("click", () => {
+              stop();
+              show(i);
+            });
+            dots.appendChild(dot);
+          });
+
+          dots.classList.replace("hidden", "flex");
+          show(0);
+
+          section.addEventListener("mouseenter", stop);
+          section.addEventListener("mouseleave", start);
+          section.addEventListener("focusin", stop);
+          section.addEventListener("focusout", start);
+          start();
+        }
+      }
+    </script>
+
     <!-- Latest posts ------------------------------------------------- -->
-    <section class="border-t border-brand-border pt-10">
+    <section class="mt-12 border-t border-brand-border pt-10">
       <div class="mb-2 flex items-baseline justify-between gap-4">
         <h2 class="font-mono text-sm uppercase tracking-widest text-brand-muted">
           Recently planted

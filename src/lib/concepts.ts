@@ -2,6 +2,7 @@ import { getPublishedPosts, type Post } from "./posts";
 import { getLibrary, type LibraryEntry } from "./library";
 import { getReflections, type Reflection } from "./reflections";
 import { getAntilibrary, type Antibook } from "./antilibrary";
+import { getQuestions, type Question } from "./questions";
 
 /**
  * Concepts are the `tags` shared by posts, library entries, and reflections,
@@ -14,7 +15,7 @@ export interface Concept {
   name: string;
   /** URL-safe form, e.g. "identity-systems". */
   slug: string;
-  /** Total items carrying this concept (posts + reflections + books). */
+  /** Total items carrying this concept (posts + reflections + books + questions). */
   count: number;
   /** Posts carrying this concept, newest first. */
   posts: Post[];
@@ -24,6 +25,8 @@ export interface Concept {
   books: LibraryEntry[];
   /** Antilibrary entries carrying this concept — the unread edge of it. */
   antibooks: Antibook[];
+  /** Open questions carrying this concept — the unanswered edge of it. */
+  questions: Question[];
 }
 
 /** Turn a concept name into a URL-safe slug. */
@@ -49,6 +52,7 @@ export async function getAllConcepts(): Promise<Concept[]> {
   const reflections = await getReflections(); // newest first
   const books = await getLibrary();
   const antibooks = await getAntilibrary();
+  const questions = await getQuestions();
   const bySlug = new Map<string, Concept>();
 
   /** Find or create the concept for a raw tag string. */
@@ -68,6 +72,7 @@ export async function getAllConcepts(): Promise<Concept[]> {
         reflections: [],
         books: [],
         antibooks: [],
+        questions: [],
       };
       bySlug.set(slug, concept);
     }
@@ -95,12 +100,19 @@ export async function getAllConcepts(): Promise<Concept[]> {
     }
   }
 
+  for (const question of questions) {
+    for (const raw of question.data.tags) {
+      ensure(raw)?.questions.push(question);
+    }
+  }
+
   for (const concept of bySlug.values()) {
     concept.count =
       concept.posts.length +
       concept.reflections.length +
       concept.books.length +
-      concept.antibooks.length;
+      concept.antibooks.length +
+      concept.questions.length;
   }
 
   return [...bySlug.values()].sort(

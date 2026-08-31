@@ -1,0 +1,67 @@
+---
+import ConceptTags from "./ConceptTags.astro";
+import Trails from "./Trails.astro";
+import Trailheads from "./Trailheads.astro";
+import { originLabel, type Question } from "../lib/questions";
+
+/**
+ * One open question. The question itself is the substance, so it is set at
+ * article size rather than list size — everything else (where it was asked,
+ * what turns on it, the trails that circle it) hangs beneath. The entry
+ * carries a stable `id` so it is addressable at `/questions#<slug>`. Also
+ * used on concept pages.
+ *
+ * `compact` drops the trails, for lists where a question is one item among
+ * many rather than the thing being read.
+ */
+interface Props {
+  question: Question;
+  compact?: boolean;
+}
+
+const { question, compact = false } = Astro.props;
+const { why, tags } = question.data;
+
+const origin = originLabel(question);
+---
+
+<article id={question.id} class="group scroll-mt-24 py-8 first:pt-0">
+  <p
+    class="font-heading text-xl leading-relaxed text-brand-text sm:text-2xl sm:leading-relaxed"
+  >
+    {question.data.question}
+  </p>
+
+  {
+    origin && (
+      <p class="mt-3 text-sm text-brand-muted">
+        <span class="font-mono text-xs uppercase tracking-widest">asked at</span>{" "}
+        {question.data.origin?.url ? (
+          <a
+            href={question.data.origin.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand-accent underline underline-offset-2 hover:decoration-2"
+          >
+            {origin} ↗
+          </a>
+        ) : (
+          origin
+        )}
+      </p>
+    )
+  }
+
+  {why && <p class="mt-3 leading-relaxed text-brand-muted">{why}</p>}
+
+  {
+    !compact && (
+      <>
+        <Trails entry={question} compact class="mt-4" />
+        <Trailheads collection="questions" id={question.id} compact />
+      </>
+    )
+  }
+
+  <ConceptTags tags={tags} class="mt-4" />
+</article>

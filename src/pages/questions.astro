@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import QuestionItem from "../components/QuestionItem.astro";
+import { getQuestions } from "../lib/questions";
+
+const questions = await getQuestions();
+const count = questions.length;
+---
+
+<BaseLayout
+  title="Questions"
+  description="The open questions Dr Wip is carrying — kept whole, in the words they were asked in."
+>
+  <div class="mx-auto max-w-[720px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">
+        Questions
+      </h1>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        The questions I keep returning to. Kept whole, in the words they were
+        asked in.
+      </p>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        Everything else in this landscape is circling them. The writing is not
+        an answer — it's an attempt, and the question stays open.
+      </p>
+    </header>
+
+    {
+      count > 0 ? (
+        <div class="divide-y divide-brand-border border-t border-brand-border pt-8">
+          {questions.map((question) => (
+            <QuestionItem question={question} />
+          ))}
+        </div>
+      ) : (
+        <p class="border-t border-brand-border py-12 leading-relaxed text-brand-muted">
+          Nothing asked here yet — the first questions are being written down.
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>
