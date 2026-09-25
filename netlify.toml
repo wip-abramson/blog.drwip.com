@@ -10,3 +10,10 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# The blyg's JSON and XML are meant to be read by other people's readers,
+# including in-browser ones, so they're served with permissive CORS (spec §4).
+[[headers]]
+  for = "/blyg/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

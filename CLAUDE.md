@@ -29,6 +29,7 @@ npm run preview  # serve the built ./dist locally
 npm run check    # astro check — type-check + validate content collection schemas
 
 npm run new:reflection -- <source-url>   # scaffold src/content/reflections/<slug>.md
+npm run blyg:publish     # record edits/new items as blyg versions (the build fails until you do)
 ```
 
 Requires Node 20+ (Netlify builds on Node 22). There is no test suite; `npm run
@@ -95,6 +96,23 @@ everything else on it is circling.
 There is no concept registry — tagging consistently is the only input, and slugs
 are derived (`"identity systems"` → `/concepts/identity-systems/`). When adding
 content that should join the map, match existing tag spelling exactly.
+
+**The blyg.** The landscape is also served as a [Blygger v0.2](https://blygger.org/spec/0.2/)
+Level 1 blyg at `/blyg/` (`blyg.json`, `feed.xml`, `items/index.json`,
+`items/<id>.json`, all static endpoints under `src/pages/blyg/`). Posts are
+*threads*; reflections and questions are *fragments* (aim for ≤2,000 characters;
+over that warns, never fails); the library stays off the wire. What each entry
+publishes as lives in `src/lib/blyg-content.mjs`, shared by the build and the
+script so their hashes agree. Identity and history live in the committed ledger
+`src/content/blyg-ledger.json`, written only by `npm run blyg:publish`: permanent
+random id, version, changelog. `src/lib/blyg.ts` **fails the build** if any
+published entry's text differs from its last recorded version (the spec's
+"stealth edit"), so run the script after every content change and commit the
+ledger with it. **Published items are never deleted**: removing a file,
+renaming it, or setting `draft: true` makes the script offer a withdrawal
+endcap, and the item's JSON stays up forever. A rename means renaming its
+ledger key by hand. Discovery comes from `rel="blyg"` in `BaseHead` and
+`<blyg:manifest>` in `rss.xml`.
 
 **Draft handling lives in one place.** `src/lib/posts.ts#getPublishedPosts`
 filters `draft: true` only when `import.meta.env.PROD`, so drafts are visible in

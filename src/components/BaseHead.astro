@@ -94,6 +94,9 @@ const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   href={new URL("rss.xml", Astro.site)}
 />
 
+<!-- Blyg discovery: the href is the blyg's origin, not its manifest (spec §12) -->
+<link rel="blyg" href={new URL("blyg/", Astro.site)} />
+
 <!-- JSON-LD structured data -->
 {
   schemas.map((schema) => (

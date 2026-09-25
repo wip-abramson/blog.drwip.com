@@ -1,0 +1,194 @@
+{
+  "posts/appreciating-and-encouraging-unpredictability": {
+    "id": "2vzwg7ghwyn91pna4znyjxg50d",
+    "kind": "thread",
+    "hash": "sha256:e516c1298ad6554318c3144da0973e29e4c783dc987515adcd1f9230a17dd62d",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-05-08T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "posts/on-identity-memory-and-meaning": {
+    "id": "7vfn69m2hs59aagmcc7krdc4at",
+    "kind": "thread",
+    "hash": "sha256:4431b137699057a156632b3b3a21fce36344b9f99462a06d159bb4e6e8db1a97",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2025-07-13T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "posts/sovereignty-over-our-digital-selves": {
+    "id": "2c46sywcznsjbetggj2875cqq2",
+    "kind": "thread",
+    "hash": "sha256:1c963179660358eb71db1e4986ea6f9ce350292ab413b071337cce4bff9b627b",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-05-19T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "posts/trust-everything-everywhere": {
+    "id": "369tyhkz6h84snjdjqv4wbxvvr",
+    "kind": "thread",
+    "hash": "sha256:59aaaa3a747db3537651c1321f0babac4ddc8e190b6059dcb730aa30aa0841f6",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2025-10-23T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "posts/trust-in-transition": {
+    "id": "2nb5yd421cvgg6jaxv5smykw48",
+    "kind": "thread",
+    "hash": "sha256:2de679f152d161b96fe5a7a28de02dbf183fabc444f669afc8160580de423e64",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2025-08-11T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "questions/everyone-an-issuer": {
+    "id": "3j2hvhqrxce38hvqjvhqz7cv4b",
+    "kind": "fragment",
+    "hash": "sha256:d0b69f67b861f517a5c1483232005e7ab9f9161d7af5786910b8d90dfefb0b11",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-08-31T07:29:30Z",
+        "note": null
+      }
+    ]
+  },
+  "questions/identity-for-a-living-human": {
+    "id": "14dpj86bwbh53mrez8w6p42jzx",
+    "kind": "fragment",
+    "hash": "sha256:989184e057a9a5bacab40ac098089702d0cf7d3c107a86d0134f856dc00cb01a",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-08-31T07:29:30Z",
+        "note": null
+      }
+    ]
+  },
+  "questions/ruggedizing-identity-systems": {
+    "id": "7pbp35h3va2dwbzzm9rd3ztt0q",
+    "kind": "fragment",
+    "hash": "sha256:ab40425f311f962df0887b1db5e5597303d07c431d4d6fc7014a842c01111774",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-08-31T07:29:30Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/attuning-to-our-quantum-reality": {
+    "id": "2je7d49h5pr1yrgr56av078rme",
+    "kind": "fragment",
+    "hash": "sha256:a1fd0dd96087e5eb380d4e06c0eed9fcf7fe7d792a2a0236793d07256c4ef26f",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-05-28T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/learning-to-jam-with-the-instruments-of-ideas": {
+    "id": "6vew4bftsp52ya3vpd32znzmwa",
+    "kind": "fragment",
+    "hash": "sha256:a6a931a29bbeae31a909e43cf79af839eaf80de565f71bd09c6f6ab1a340fb55",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-06-13T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/mdma": {
+    "id": "6km3cq30jjpg43nzmcxgmt71jc",
+    "kind": "fragment",
+    "hash": "sha256:777b1225c77315be7d461aa51cd243b5be31f50ba833a870c2ba7a646a183088",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-07-08T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/on-hybrid-human-ai-societies": {
+    "id": "50wbhttjxsswk3961x482p22ty",
+    "kind": "fragment",
+    "hash": "sha256:fb81241f5709614b0643420dfeb3160571b7adc755a225b43c25cb3edfb5c6e5",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-07-09T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/on-ocean-memory": {
+    "id": "5qv63xkf097sgh9w1yy98x2je1",
+    "kind": "fragment",
+    "hash": "sha256:091f79a2b0e91c6fc5472ce29d6f02321c80e243f8a585dee560ace583307445",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-07-09T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/on-portals-and-pathways-through-reality": {
+    "id": "20j02t0byr95mmakwqn3qrzj2z",
+    "kind": "fragment",
+    "hash": "sha256:582311feb4f927b2e6caca3fa624c2d2fb252eae05a37bee015659292cd91184",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-06-23T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/rearchitecting-our-digital-work-environment": {
+    "id": "6vxdjf8mycznzd499fz1z6rbt2",
+    "kind": "fragment",
+    "hash": "sha256:ad4461d83ac03cc97e2ba9476a51bd914780029766b0daf28e19f3e5f36dd20f",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-06-25T00:00:00Z",
+        "note": null
+      }
+    ]
+  },
+  "reflections/structures-for-coordinating-imperfect-agents": {
+    "id": "43exk90xcwrm4a8p6qx3dgwv74",
+    "kind": "fragment",
+    "hash": "sha256:7d379956e008794458b0a87f68b12419d2339280551c4fb2682d741b85347e3c",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-06-29T00:00:00Z",
+        "note": null
+      }
+    ]
+  }
+}
