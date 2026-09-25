@@ -192,3 +192,13 @@
     url: https://substack.com/home/post/p-207796149
   # why: >-
   # tags:
+
+- id: what-is-thought
+  title: What Is Thought?
+  author: Eric Baum
+  added: "2026-09"
+  via:
+    who: Bengo
+    where: GDC 2026
+  # why: >-
+  # tags:
