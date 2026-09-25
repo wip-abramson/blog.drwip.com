@@ -1,0 +1,121 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { LINKS } from "../../consts";
+import { BLYG_VERSION, getBlygItems, getPublishEvents } from "../../lib/blyg";
+
+/**
+ * The blyg's human-readable feed page (spec §4 "SHOULD"). The protocol lives
+ * in the JSON and XML beside it; this is presentation, and the place the blyg
+ * explains itself to a person who followed the footer link.
+ */
+const SPEC_URL = `https://blygger.org/spec/${BLYG_VERSION}/`;
+
+const items = await getBlygItems();
+const events = getPublishEvents(items, 20);
+
+/** The files a reader resolves; the `href`s are relative to `/blyg/`. */
+const surface = [
+  { href: "blyg.json", note: "the manifest — hand this to a reader" },
+  { href: "feed.xml", note: "every publish event, as RSS 2.0" },
+  { href: "items/index.json", note: "the archive of every item" },
+];
+---
+
+<BaseLayout
+  title="Blyg"
+  description="The Landscape of Thought as a blyg — versioned, append-only, and readable by any Blygger reader."
+>
+  <div class="mx-auto max-w-[720px] px-6">
+    <header class="pb-8 pt-20 sm:pt-24">
+      <h1 class="font-heading text-3xl text-brand-text sm:text-4xl">Blyg</h1>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        This landscape is also published as a
+        <a
+          href="https://blygger.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-accent underline underline-offset-4 hover:decoration-2"
+          >blyg</a
+        >: every thought seed, reflection, and question as an item with a
+        permanent id and a version history. Edits are published, never
+        hidden, and nothing that goes out is ever taken back down.
+      </p>
+      <p class="mt-3 max-w-[34rem] leading-relaxed text-brand-muted">
+        To follow along, give this page's address to a Blygger reader.
+      </p>
+    </header>
+
+    <!-- The wire ----------------------------------------------------- -->
+    <section class="border-t border-brand-border pt-8">
+      <h2 class="mb-4 font-mono text-sm uppercase tracking-widest text-brand-muted">
+        The wire
+      </h2>
+      <ul class="space-y-3">
+        {
+          surface.map(({ href, note }) => (
+            <li>
+              <a
+                href={href}
+                class="font-mono text-sm text-brand-accent underline underline-offset-4 hover:decoration-2"
+              >
+                {href}
+              </a>
+              <span class="text-brand-muted"> — {note}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 text-sm leading-relaxed text-brand-muted">
+        Speaks
+        <a
+          href={SPEC_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-accent underline underline-offset-4 hover:decoration-2"
+          >Blygger v{BLYG_VERSION}</a
+        >. Prefer a plain feed?
+        <a
+          href={LINKS.rss}
+          class="font-mono text-brand-accent underline underline-offset-4 hover:decoration-2"
+          >rss.xml</a
+        > still carries the writing.
+      </p>
+    </section>
+
+    <!-- Recent publish events --------------------------------------- -->
+    <section class="mt-12 border-t border-brand-border pt-8">
+      <h2 class="mb-2 font-mono text-sm uppercase tracking-widest text-brand-muted">
+        Lately published
+      </h2>
+      <div class="divide-y divide-brand-border">
+        {
+          events.map(({ item, event }) => (
+            <article class="py-5">
+              <div class="mb-1.5 flex flex-wrap items-center gap-3 font-mono text-xs text-brand-muted">
+                <FormattedDate date={new Date(event.at)} />
+                <span>{event.withdrawn ? "withdrawn" : item.doc.kind}</span>
+                <span>v{event.version}</span>
+              </div>
+              {item.permalink && !event.withdrawn ? (
+                <a
+                  href={new URL(item.permalink).pathname}
+                  class="font-heading text-lg leading-snug text-brand-text transition-colors hover:text-brand-accent"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <span class="font-heading text-lg leading-snug text-brand-muted">
+                  {item.label}
+                </span>
+              )}
+              {event.note && (
+                <p class="mt-1 text-sm leading-relaxed text-brand-muted">{event.note}</p>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

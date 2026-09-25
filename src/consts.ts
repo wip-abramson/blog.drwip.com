@@ -20,6 +20,7 @@ export const LINKS = {
   main: "https://drwip.com",
   subscribe: "https://www.wordsfromwip.com/s/words-from-dr-wip",
   rss: "/rss.xml",
+  blyg: "/blyg/",
 } as const;
 
 /**
