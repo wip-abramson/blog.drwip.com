@@ -17,3 +17,12 @@
   for = "/blyg/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
+
+# blog.drwip.com is the deprecated name for this space: send it here, so
+# readers and blyg subscribers settle on thinking.drwip.com as the identity
+# (spec §12.2 takes the final fetch origin, after redirects).
+[[redirects]]
+  from = "https://blog.drwip.com/*"
+  to = "https://thinking.drwip.com/:splat"
+  status = 301
+  force = true
