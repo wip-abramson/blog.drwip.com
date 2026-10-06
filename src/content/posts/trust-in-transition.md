@@ -34,7 +34,7 @@ Christophers call to action kicked off a mammoth and fascinating email thread th
 
 The whole thread is worth a read, it contains a diversity of perspectives, personal lived experiences and well-informed opinions from many of the leaders in this space.
 
-The latest round of emails were in responses to a [series](%5BFrom%20Printing%20Press%20to%20Digital%20Identity:%20A%20Pattern%20of%20Moral%20Crisis%5D(https://kyledenhartog.com/a-pattern-of-moral-crisis/)) of [blog](https://kyledenhartog.com/centralized-ssi/) [posts](%5BDecentralizing%20Age%20Verification%20with%20SSI:%20Separating%20Content%20Moderation%20from%20Guardianship%5D(https://kyledenhartog.com/decentralized-age-verification/)) by Kyle raising serious and thoughtful concerns about the centralization of power that these technical architectures for identification enable, especially when the focus is on *some authoratative* issuer issuing credentials to mere holders and subjects of identification systems.
+The latest round of emails were in responses to a [series](https://kyledenhartog.com/a-pattern-of-moral-crisis/) of [blog](https://kyledenhartog.com/centralized-ssi/) [posts](https://kyledenhartog.com/decentralized-age-verification/) by Kyle raising serious and thoughtful concerns about the centralization of power that these technical architectures for identification enable, especially when the focus is on *some authoratative* issuer issuing credentials to mere holders and subjects of identification systems.
 
 Over the weekend, after digesting Kyles words for some time Manu replied with an [excellent summary](https://lists.w3.org/Archives/Public/public-credentials/2025Aug/0041.html).
 

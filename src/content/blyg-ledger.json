@@ -50,12 +50,17 @@
   "posts/trust-in-transition": {
     "id": "2nb5yd421cvgg6jaxv5smykw48",
     "kind": "thread",
-    "hash": "sha256:2de679f152d161b96fe5a7a28de02dbf183fabc444f669afc8160580de423e64",
+    "hash": "sha256:8398734fb68965c3360aba232acbc8d5028af77fbcb9248f47b4c6d11cf229c4",
     "changelog": [
       {
         "version": 1,
         "at": "2025-08-11T00:00:00Z",
         "note": null
+      },
+      {
+        "version": 2,
+        "at": "2026-10-06T09:09:18Z",
+        "note": "fixed two broken links"
       }
     ]
   },
