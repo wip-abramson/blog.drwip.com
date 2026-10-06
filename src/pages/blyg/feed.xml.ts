@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 import {
+  BLYG_LEVEL,
   BLYG_NAMESPACE,
   BLYG_ORIGIN,
   getBlygItems,
@@ -42,7 +43,7 @@ export const GET: APIRoute = async () => {
     return [
       "    <item>",
       `      <guid isPermaLink="false">blyg:${doc.id}:v${event.version}</guid>`,
-      item.permalink ? `      <link>${escape(item.permalink)}</link>` : "",
+      `      <link>${BLYG_ORIGIN}${doc.page}</link>`,
       `      <title>${escape(title)}</title>`,
       `      <description>${withdrawn ? "" : cdata(doc.content_html)}</description>`,
       `      <pubDate>${rfc822(event.at)}</pubDate>`,
@@ -66,7 +67,7 @@ export const GET: APIRoute = async () => {
     `    <link>${BLYG_ORIGIN}</link>`,
     `    <description>${escape(SITE_DESCRIPTION)}</description>`,
     `    <lastBuildDate>${rfc822(items[0].doc.updated)}</lastBuildDate>`,
-    "    <blyg:level>1</blyg:level>",
+    `    <blyg:level>${BLYG_LEVEL}</blyg:level>`,
     `    <blyg:manifest>${BLYG_ORIGIN}blyg.json</blyg:manifest>`,
     ...entries,
     "  </channel>",

@@ -12,7 +12,12 @@ const vitePlugins = /** @type {any} */ ([tailwindcss()]);
 // https://astro.build/config
 export default defineConfig({
   site: "https://thinking.drwip.com",
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // The blyg's `t/{id}/` and `f/{id}/` permalinks only forward to the
+    // writing, which the sitemap already lists.
+    sitemap({ filter: (page) => !/\/blyg\/[tf]\//.test(page) }),
+  ],
   vite: {
     plugins: vitePlugins,
   },

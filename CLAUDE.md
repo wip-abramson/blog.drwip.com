@@ -97,8 +97,8 @@ There is no concept registry — tagging consistently is the only input, and slu
 are derived (`"identity systems"` → `/concepts/identity-systems/`). When adding
 content that should join the map, match existing tag spelling exactly.
 
-**The blyg.** The landscape is also served as a [Blygger v0.2](https://blygger.org/spec/0.2/)
-Level 1 blyg at `/blyg/` (`blyg.json`, `feed.xml`, `items/index.json`,
+**The blyg.** The landscape is also served as a [Blygger v0.3](https://blygger.org/spec/0.3/)
+Level 2 blyg at `/blyg/` (`blyg.json`, `feed.xml`, `items/index.json`,
 `items/<id>.json`, all static endpoints under `src/pages/blyg/`). Posts are
 *threads*; reflections and questions are *fragments* (aim for ≤2,000 characters;
 over that warns, never fails); the library stays off the wire. What each entry
@@ -111,8 +111,13 @@ published entry's text differs from its last recorded version (the spec's
 ledger with it. **Published items are never deleted**: removing a file,
 renaming it, or setting `draft: true` makes the script offer a withdrawal
 endcap, and the item's JSON stays up forever. A rename means renaming its
-ledger key by hand. Discovery comes from `rel="blyg"` in `BaseHead` and
-`<blyg:manifest>` in `rss.xml`.
+ledger key by hand. Each item's `page` is an id-based permalink
+(`/blyg/t/<id>/` for threads, `/blyg/f/<id>/` for fragments, from
+`src/pages/blyg/[prefix]/[id].astro`) that forwards to the writing, so it stays
+stable however slugs move; other readers build their links from it.
+`content_html` must carry only absolute URLs (`standalone()` in `blyg.ts`).
+Discovery comes from `rel="blyg"` in `BaseHead` and `<blyg:manifest>` in
+`rss.xml`.
 
 **Draft handling lives in one place.** `src/lib/posts.ts#getPublishedPosts`
 filters `draft: true` only when `import.meta.env.PROD`, so drafts are visible in

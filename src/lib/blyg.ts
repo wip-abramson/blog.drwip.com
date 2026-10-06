@@ -10,12 +10,17 @@ import {
   contentMd,
 } from "./blyg-content.mjs";
 import { questionLabel } from "./questions";
+import pkg from "../../package.json";
 
 /**
- * The blyg — the landscape served as a Blygger v0.2 Level 1 publication at
- * `/blyg/` (https://blygger.org/spec/0.2/). Posts are threads; reflections and
+ * The blyg — the landscape served as a Blygger v0.3 Level 2 publication at
+ * `/blyg/` (https://blygger.org/spec/0.3/). Posts are threads; reflections and
  * questions are fragments; the library stays off the wire, being records
  * rather than writing.
+ *
+ * Level 2 asks nothing of a blyg that never quotes, stubs, or forks another
+ * origin beyond a `page` per item (spec §5.8). Webmention is optional and
+ * needs a server, so a static blyg advertises no endpoint (§15.7).
  *
  * Content is the writing itself; identity and history come from the ledger
  * that `npm run blyg:publish` keeps. This module joins the two and refuses to
@@ -23,7 +28,11 @@ import { questionLabel } from "./questions";
  */
 
 export const BLYG_ORIGIN = `${SITE_URL}/blyg/`;
-export const BLYG_VERSION = "0.2";
+export const BLYG_VERSION = "0.3";
+export const BLYG_LEVEL = 2;
+/** Who made the blyg, as `name/version` (spec §3.2) — a census, never a capability. */
+export const BLYG_GENERATOR = `thinking.drwip.com/${pkg.version}`;
+export const BLYG_GENERATOR_URL = "https://github.com/wip-abramson/blog.drwip.com";
 /** Permanent wire token — the `0.1` is spelling, not a version claim. */
 export const BLYG_NAMESPACE = "https://blygger.org/ns/0.1";
 
@@ -50,6 +59,8 @@ export interface ItemDocument {
   id: string;
   kind: "thread" | "fragment" | "withdrawn";
   origin: string;
+  /** Origin-relative permalink (spec §5.8); kept through withdrawal. */
+  page: string;
   author: { name: string };
   created: string;
   updated: string;
@@ -68,7 +79,7 @@ export interface BlygItem {
   changelog: ChangelogEntry[];
   /** How the item names itself in a feed title. */
   label: string;
-  /** Its page on the site; a withdrawn item has none. */
+  /** Where it lives on the site; a withdrawn item has nowhere. */
   permalink?: string;
 }
 
@@ -114,7 +125,7 @@ async function getSources(): Promise<Source[]> {
       kind: KINDS.questions,
       md: contentMd.questions(question.data),
       label: questionLabel(question),
-      permalink: `${SITE_URL}/questions#${question.id}`,
+      permalink: `${SITE_URL}/questions/#${question.id}`,
     })),
   ];
 }
@@ -130,12 +141,16 @@ const MIME: Record<string, string> = {
 };
 
 /**
- * Feed HTML must stand alone (spec §7): site-relative URLs become absolute.
+ * `content_html` must stand alone (spec §5.2): it travels into feeds and other
+ * people's stores with nothing to resolve against, so every URL in it is made
+ * absolute against the item's page on the site — footnote anchors included.
  * Images are listed as the item's media; they live under `public/`, so their
  * URLs never change — the immutability the spec asks of media.
  */
-function standalone(html: string) {
-  const content_html = html.replace(/(src|href)="\/(?!\/)/g, `$1="${SITE_URL}/`);
+function standalone(html: string, base: string) {
+  const content_html = html.replace(/\b(src|href)="([^"]*)"/g, (attr, name, url) =>
+    /^[a-z][a-z\d+.-]*:/i.test(url) ? attr : `${name}="${new URL(url, base).href}"`,
+  );
   const media = [...content_html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => {
     const url = tag.match(/\bsrc="([^"]*)"/)?.[1] ?? "";
     const alt = tag.match(/\balt="([^"]*)"/)?.[1];
@@ -143,6 +158,24 @@ function standalone(html: string) {
     return { url, mime: MIME[ext] ?? "application/octet-stream", ...(alt ? { alt } : {}) };
   });
   return { content_html, media };
+}
+
+/**
+ * The permalink a reader builds links from (spec §5.8), on the reference
+ * client's `t/{id}/` and `f/{id}/` convention. It names the id, not the slug,
+ * so it stays stable for the life of the item however the site moves; the
+ * page itself (`src/pages/blyg/[prefix]/[id].astro`) forwards to the writing.
+ */
+export const pagePath = (kind: LedgerEntry["kind"], id: string) =>
+  `${kind === "thread" ? "t" : "f"}/${id}/`;
+
+/**
+ * `![[id]]` and `[[id]]` (spec §10.1) outside code: a grammar this blyg doesn't
+ * resolve, so publishing one would put a promise on the wire it can't keep.
+ */
+function citesItems(md: string) {
+  const prose = md.replace(/^(```|~~~)[\s\S]*?^\1/gm, "").replace(/`[^`\n]*`/g, "");
+  return /\[\[[0-9a-z]{26}(@v\d+)?\]\]/.test(prose);
 }
 
 async function loadItems(): Promise<BlygItem[]> {
@@ -162,6 +195,7 @@ async function loadItems(): Promise<BlygItem[]> {
       id: entry.id,
       kind,
       origin: BLYG_ORIGIN,
+      page: pagePath(entry.kind, entry.id),
       author: { name: AUTHOR },
       created: entry.changelog[0].at,
       updated: latest.at,
@@ -189,6 +223,9 @@ async function loadItems(): Promise<BlygItem[]> {
       problems.push(`${source.key} changed since v${entry.changelog.at(-1)!.version}`);
       continue;
     }
+    if (citesItems(source.md)) {
+      throw new Error(`${source.key} uses [[id]] or ![[id]], which the blyg can't resolve yet`);
+    }
     if (source.kind === "fragment" && source.md.length > FRAGMENT_CAP) {
       console.warn(
         `[blyg] ${source.key} is ${source.md.length} characters; fragments should stay under ${FRAGMENT_CAP}`,
@@ -197,7 +234,10 @@ async function loadItems(): Promise<BlygItem[]> {
 
     const { code } = await processor.render(source.md);
     items.push({
-      doc: document(entry, source.kind, { content_md: source.md, ...standalone(code) }),
+      doc: document(entry, source.kind, {
+        content_md: source.md,
+        ...standalone(code, source.permalink),
+      }),
       changelog: entry.changelog,
       label: source.label,
       permalink: source.permalink,

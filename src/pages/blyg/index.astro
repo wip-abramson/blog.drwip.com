@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
-import { LINKS } from "../../consts";
+import { LINKS, SITE_URL } from "../../consts";
 import { BLYG_VERSION, getBlygItems, getPublishEvents } from "../../lib/blyg";
 
 /**
@@ -99,7 +99,7 @@ const surface = [
               </div>
               {item.permalink && !event.withdrawn ? (
                 <a
-                  href={new URL(item.permalink).pathname}
+                  href={item.permalink.replace(SITE_URL, "")}
                   class="font-heading text-lg leading-snug text-brand-text transition-colors hover:text-brand-accent"
                 >
                   {item.label}

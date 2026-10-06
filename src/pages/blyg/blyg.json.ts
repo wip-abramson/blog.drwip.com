@@ -1,6 +1,14 @@
 import type { APIRoute } from "astro";
 import { AUTHOR, IDENTITY, LINKS, SITE_TITLE, SITE_URL } from "../../consts";
-import { BLYG_ORIGIN, BLYG_VERSION, blygJson, getBlygItems } from "../../lib/blyg";
+import {
+  BLYG_GENERATOR,
+  BLYG_GENERATOR_URL,
+  BLYG_LEVEL,
+  BLYG_ORIGIN,
+  BLYG_VERSION,
+  blygJson,
+  getBlygItems,
+} from "../../lib/blyg";
 
 /** The blyg manifest (spec §6.1) — what a reader resolves the landscape to. */
 export const GET: APIRoute = async () => {
@@ -8,8 +16,9 @@ export const GET: APIRoute = async () => {
 
   return blygJson({
     blyg: BLYG_VERSION,
-    level: 1,
-    generator: "thinking.drwip.com",
+    level: BLYG_LEVEL,
+    generator: BLYG_GENERATOR,
+    generator_url: BLYG_GENERATOR_URL,
     site: BLYG_ORIGIN,
     title: SITE_TITLE,
     author: {

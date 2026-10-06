@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import { SITE_TITLE } from "../../../consts";
+import { BLYG_ORIGIN, getBlygItems, type BlygItem } from "../../../lib/blyg";
+
+/**
+ * Each item's permalink (spec §5.8) — `t/{id}/` for threads, `f/{id}/` for
+ * fragments — the page a reader links to and a Webmention names. The writing
+ * itself lives at its own address on the site, so this forwards there; what
+ * stays here is the stable id-based path and the way back to the item
+ * document. A withdrawn item's page stays up too, saying so.
+ */
+export const getStaticPaths = (async () => {
+  const items = await getBlygItems();
+  return items.map((item) => {
+    const [prefix, id] = item.doc.page.split("/");
+    return { params: { prefix, id }, props: { item } };
+  });
+}) satisfies GetStaticPaths;
+
+const { item } = Astro.props as { item: BlygItem };
+const { doc, permalink, label } = item;
+const json = `${BLYG_ORIGIN}items/${doc.id}.json`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{label} — {SITE_TITLE}</title>
+    <link rel="alternate" type="application/json" href={json} />
+    <link rel="blyg" href={BLYG_ORIGIN} />
+    {permalink && <link rel="canonical" href={permalink} />}
+    {permalink && <meta http-equiv="refresh" content={`0; url=${permalink}`} />}
+  </head>
+  <body>
+    {
+      permalink ? (
+        <p>
+          <a href={permalink}>{label}</a>
+        </p>
+      ) : (
+        <p>This item was withdrawn.</p>
+      )
+    }
+    <p><a href={json}>Item document</a></p>
+  </body>
+</html>
