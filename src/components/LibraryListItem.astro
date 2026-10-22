@@ -15,7 +15,7 @@ interface Props {
 const { entry } = Astro.props;
 const { title, author, read, influence, summary, tags, annotations, cover } = entry.data;
 const href = `/library/${entry.id}/`;
-const blurb = influence ?? summary;
+const blurb = summary ?? influence;
 // Prefer the book cover; fall back to the first annotation page.
 const thumb = cover
   ? { image: cover, alt: `Cover of ${title}` }
