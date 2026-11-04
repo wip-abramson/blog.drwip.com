@@ -43,3 +43,14 @@
   origin:
     where: Global Digital Collaboration conference, 2025
   tags: ["identity systems", "infrastructure"]
+
+- id: what-it-means-to-understand
+  question: >-
+    What does it mean to understand, what is being understood and what is
+    doing the understanding?
+  why: >-
+    Thinking about what it means to say AI understands and what the
+    characteristics of an understander are.
+  origin:
+    where: Nous AI Safety
+    when: 2026-10

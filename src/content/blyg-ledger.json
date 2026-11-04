@@ -100,6 +100,18 @@
       }
     ]
   },
+  "questions/what-it-means-to-understand": {
+    "id": "54jk3cja10kq3axj4mxas72qh9",
+    "kind": "fragment",
+    "hash": "sha256:6587491ab1e93f2f7bc18eb138744f30ada407da99fbcc4d44f9e2f7f8b83e51",
+    "changelog": [
+      {
+        "version": 1,
+        "at": "2026-11-04T11:16:48Z",
+        "note": null
+      }
+    ]
+  },
   "reflections/attuning-to-our-quantum-reality": {
     "id": "2je7d49h5pr1yrgr56av078rme",
     "kind": "fragment",
